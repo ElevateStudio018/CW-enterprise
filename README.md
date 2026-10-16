@@ -11,13 +11,15 @@ npm run serve   # bygger och startar http://localhost:8080
 
 `dist/` är det som laddas upp till webbhotellet.
 
+Förhandsvisning: https://elevatestudio018.github.io/CW-enterprise/ (GitHub Pages, publiceras från branchen `gh-pages`, som innehåller en byggd kopia av `dist/`).
+
 ## Struktur
 
 - `src/pages/` – en fil per sida. `{{> header}}`, `{{> head}}`, `{{> footer}}` ersätts vid bygget.
 - `src/partials/` – gemensam head, header (meny) och footer.
 - `assets/css/style.css` – all styling (färger och typsnitt överst i `:root`).
-- `assets/js/main.js` – meny, scroll-animationer och kontaktformulär.
-- `assets/js/scenes.js` – 3D-scenerna. Ett element med `data-scene="koncern|network|building|frame|terrain"` får en scen.
+- `assets/js/main.js` – meny och kontaktformulär.
+- `assets/js/scenes.js` – 3D-modellerna. Ett element med `data-model="koncern|system|building|frame"` får en modell.
 
 3D laddas bara om webbläsaren har WebGL. Med "reducerad rörelse" påslaget visas en stillbild.
 Kontaktformuläret har ingen server, utan öppnar besökarens e-postprogram.
