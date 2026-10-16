@@ -2,6 +2,7 @@
    Färger: bläck, kalksten, mässing. Typsnitt: Instrument Serif / Inter Tight / JetBrains Mono. */
 
 :root {
+  color-scheme: dark;
   --ink: #0c0e11;
   --ink-2: #13161b;
   --ink-3: #1b1f26;
