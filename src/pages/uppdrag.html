@@ -22,20 +22,11 @@
 
   <section class="section">
     <div class="wrap">
-      <div class="table-wrap">
-        <table class="stack">
-          <thead><tr><th scope="col">Period</th><th scope="col">Uppdrag</th><th scope="col">System</th><th scope="col">Roll</th></tr></thead>
-          <tbody>
-            <tr><td>jun 2025 – apr 2026</td><td>Analysfas för nytt ERP-system</td><td>Microsoft Business Central</td><td>Projektledare</td></tr>
-            <tr><td>jun 2024 – maj 2025</td><td>Utveckling och driftsättning</td><td>CRM och CPQ</td><td>Projektledare</td></tr>
-            <tr><td>nov 2023 – apr 2024</td><td>Proof of Concept för nytt ERP-system</td><td>ERP</td><td>Projektledare</td></tr>
-          </tbody>
-        </table>
-      </div>
+      {{> gantt}}
     </div>
   </section>
 
-  <section class="section section--grey">
+  <section class="section section--grey" id="erp">
     <div class="wrap cols">
       <div class="cols-head"><h2 class="h2">Analysfas, ERP</h2><p>Juni 2025 – april 2026</p></div>
       <div class="prose">
@@ -45,7 +36,7 @@
     </div>
   </section>
 
-  <section class="section">
+  <section class="section" id="crm">
     <div class="wrap cols">
       <div class="cols-head"><h2 class="h2">CRM och CPQ</h2><p>Juni 2024 – maj 2025</p></div>
       <div class="prose">
@@ -55,7 +46,7 @@
     </div>
   </section>
 
-  <section class="section section--grey">
+  <section class="section section--grey" id="poc">
     <div class="wrap cols">
       <div class="cols-head"><h2 class="h2">Proof of Concept, ERP</h2><p>November 2023 – april 2024</p></div>
       <div class="prose">

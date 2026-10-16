@@ -45,6 +45,18 @@ function hasWebGL() {
 }
 if (models.length && hasWebGL()) {
   import('./scenes.js')
-    .then(({ mount }) => models.forEach((el) => mount(el, { reduceMotion })))
+    .then(({ mount }) => models.forEach((el) => {
+      const ctrl = mount(el, { reduceMotion });
+      // Länkar med data-highlight markerar motsvarande del av modellen i samma sektion
+      const scope = el.closest('section') || document;
+      scope.querySelectorAll('[data-highlight]').forEach((link) => {
+        const on = () => ctrl?.highlight(+link.dataset.highlight);
+        const off = () => ctrl?.highlight(-1);
+        link.addEventListener('pointerenter', on);
+        link.addEventListener('focus', on);
+        link.addEventListener('pointerleave', off);
+        link.addEventListener('blur', off);
+      });
+    }))
     .catch((err) => console.warn('3D-modellen kunde inte laddas', err));
 }

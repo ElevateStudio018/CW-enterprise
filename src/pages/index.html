@@ -10,27 +10,28 @@
 
 <main id="main">
 
-  <section class="page-head">
+  <section class="hero">
     <div class="wrap">
-      <div>
-        <h1 class="h1">Konsult, förvaltning och bygg i en koncern</h1>
-        <p class="intro">CW Enterprise AB leder, utvecklar och förvaltar projekt. Moderbolaget arbetar med management consulting och fastighetsförvaltning. Byggtjänsterna utförs av det helägda dotterbolaget Västkust Bygg &amp; Montage AB.</p>
-        <div class="head-actions">
-          <a class="btn btn-primary" href="verksamheter.html">Våra verksamheter</a>
-          <a class="btn" href="kontakt.html">Kontakta oss</a>
-        </div>
+      <div class="hero-text">
+        <h1 class="display">Leder, utvecklar <span>och förvaltar.</span></h1>
+        <p class="intro">CW Enterprise AB är en koncern i Kullavik med tre verksamheter: projektledning, fastighetsförvaltning och bygg genom dotterbolaget Västkust Bygg &amp; Montage AB.</p>
+        <ul class="picks">
+          <li><a href="konsulting.html" data-highlight="0"><strong>Management Consulting</strong><small>Projektledning, processer och affärssystem</small><span class="arrow" aria-hidden="true">→</span></a></li>
+          <li><a href="forvaltning.html" data-highlight="1"><strong>Fastighetsförvaltning</strong><small>Ekonomisk och teknisk förvaltning</small><span class="arrow" aria-hidden="true">→</span></a></li>
+          <li><a href="bygg.html" data-highlight="2"><strong>Bygg &amp; Montage</strong><small>Nybyggnation, renovering, badrum och kök</small><span class="arrow" aria-hidden="true">→</span></a></li>
+        </ul>
       </div>
-      <figure class="figure">
-        <div class="model" data-model="koncern">
+      <div class="hero-model">
+        <div class="model" data-model="koncern" data-scroll-turn data-zoom="0.78">
           <div class="model-fallback">Modell av koncernens tre verksamheter</div>
           <div class="labels" aria-hidden="true">
-            <div class="label" data-anchor="0"><span>Management Consulting</span></div>
-            <div class="label" data-anchor="1"><span>Fastighetsförvaltning</span></div>
-            <div class="label" data-anchor="2"><span>Bygg &amp; Montage</span></div>
+            <div class="label" data-anchor="0"><span>Konsult</span></div>
+            <div class="label" data-anchor="1"><span>Förvaltning</span></div>
+            <div class="label" data-anchor="2"><span>Bygg</span></div>
           </div>
         </div>
-        <figcaption>Koncernens tre verksamheter på en gemensam grund. Dra i modellen för att vrida den.</figcaption>
-      </figure>
+        <span class="hint">Dra för att vrida modellen</span>
+      </div>
     </div>
   </section>
 
@@ -78,22 +79,14 @@
     </div>
   </section>
 
-  <section class="section section--grey">
+  <section class="band">
     <div class="wrap">
       <div class="section-title">
-        <h2 class="h2">Senaste uppdrag</h2>
-        <a href="uppdrag.html">Alla uppdrag</a>
+        <h2 class="h2">Uppdrag 2023–2026</h2>
+        <p>Tre projekt i följd för Logisnext Mitsubishi Forklift Trucks Europe, alla med samtliga europeiska affärsenheter.</p>
       </div>
-      <div class="table-wrap">
-        <table class="stack">
-          <thead><tr><th scope="col">Period</th><th scope="col">Uppdrag</th><th scope="col">Kund</th><th scope="col">Roll</th></tr></thead>
-          <tbody>
-            <tr><td>jun 2025 – apr 2026</td><td>Analysfas för nytt ERP-system (Microsoft Business Central), alla europeiska affärsenheter</td><td>Logisnext Mitsubishi Forklift Trucks Europe</td><td>Projektledare</td></tr>
-            <tr><td>jun 2024 – maj 2025</td><td>Utveckling och driftsättning av CRM/CPQ-system, alla europeiska affärsenheter</td><td>Logisnext Mitsubishi Forklift Trucks Europe</td><td>Projektledare</td></tr>
-            <tr><td>nov 2023 – apr 2024</td><td>Proof of Concept för nytt ERP-system, alla europeiska affärsenheter</td><td>Logisnext Mitsubishi Forklift Trucks Europe</td><td>Projektledare</td></tr>
-          </tbody>
-        </table>
-      </div>
+      {{> gantt}}
+      <p class="gantt-note"><a href="uppdrag.html">Läs om uppdragen</a></p>
     </div>
   </section>
 

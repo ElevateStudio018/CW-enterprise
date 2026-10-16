@@ -6,7 +6,8 @@ import * as THREE from 'three';
 const PAPER = 0xf1f2ef;
 const INK = 0x16191c;
 const GREY = 0x8a9096;
-const ACCENT = 0x1f3f8f;
+const ACCENT = 0x2342d6;
+const ACCENT_FACE = 0xdfe5ff;
 
 const white = () => new THREE.MeshLambertMaterial({ color: 0xffffff });
 const lineMat = (color = INK, opacity = 1) => new THREE.LineBasicMaterial({ color, transparent: opacity < 1, opacity });
@@ -79,6 +80,7 @@ function koncern(root) {
   return {
     size: 8.6,
     anchors,
+    parts,
     update(t) { parts.forEach((p, i) => { p.scale.y = Math.max(0.001, ease((t - i * 0.25) / 1.2)); }); },
   };
 }
@@ -285,7 +287,7 @@ export function mount(el, { reduceMotion = false } = {}) {
     renderer.setSize(W, H, false);
     const aspect = W / H;
     // Modellen ska få plats både på bredden och på höjden
-    const half = api.size * 0.52 * Math.max(1, 1.333 / aspect);
+    const half = api.size * 0.52 * Math.max(1, 1.333 / aspect) * (+el.dataset.zoom || 1);
     camera.top = half; camera.bottom = -half;
     camera.left = -half * aspect; camera.right = half * aspect;
     camera.updateProjectionMatrix();
@@ -302,9 +304,33 @@ export function mount(el, { reduceMotion = false } = {}) {
   el.style.cursor = 'grab';
   el.style.touchAction = 'pan-y';
 
+  // Markera en del av modellen (koboltblå) och tona ned resten
+  let active = -1;
+  function paint() {
+    (api.parts || []).forEach((p, j) => {
+      p.traverse((o) => {
+        if (!o.material || !o.material.color) return;
+        if (o.userData.base === undefined) o.userData.base = o.material.color.getHex();
+        const on = active === j, dim = active !== -1 && !on;
+        if (o.isLineSegments) o.material.color.setHex(on ? ACCENT : o.userData.base);
+        else if (o.isMesh) o.material.color.setHex(on ? (o.userData.base === 0xffffff ? ACCENT_FACE : ACCENT) : dim ? 0xe6e8e4 : o.userData.base);
+        if (o.isLineSegments) { o.material.transparent = true; o.material.opacity = dim ? 0.25 : 1; }
+      });
+    });
+    labels.forEach((lab) => lab.classList.toggle('is-active', +lab.dataset.anchor === active));
+  }
+
+  // Scrollning vrider modellen när den ligger i sidhuvudet
+  const scrollTurn = el.hasAttribute('data-scroll-turn');
+  function scrollAngle() {
+    if (!scrollTurn) return 0;
+    const r = el.getBoundingClientRect();
+    return Math.min(Math.max(-r.top / Math.max(r.height, 1), 0), 1) * 1.4;
+  }
+
   function render(t) {
     api.update(t);
-    root.rotation.y = -0.15 + spin + auto;
+    root.rotation.y = -0.15 + spin + auto + scrollAngle();
     renderer.render(scene, camera);
     labels.forEach((lab, i) => {
       const a = api.anchors[+lab.dataset.anchor];
@@ -319,7 +345,10 @@ export function mount(el, { reduceMotion = false } = {}) {
   resize();
   el.classList.add('is-ready');
 
-  if (reduceMotion) { render(api.still ?? 4); return; }
+  const controller = {
+    highlight(i) { active = i; paint(); if (reduceMotion) render(api.still ?? 4); },
+  };
+  if (reduceMotion) { render(api.still ?? 4); return controller; }
 
   const clock = new THREE.Clock();
   let t = 0, raf = 0, running = false;
@@ -334,4 +363,5 @@ export function mount(el, { reduceMotion = false } = {}) {
     if (entry.isIntersecting && !running) { running = true; clock.getDelta(); loop(); }
     else if (!entry.isIntersecting && running) { running = false; cancelAnimationFrame(raf); }
   }).observe(el);
+  return controller;
 }

@@ -10,7 +10,9 @@
   --ink-2: #50575d;
   --rule: #d8dbd6;
   --rule-strong: #b7bcb6;
-  --accent: #1f3f8f;
+  --accent: #2342d6;
+  --accent-deep: #172c99;
+  --accent-soft: #dfe5ff;
 
   --display: "Familjen Grotesk", "Helvetica Neue", Arial, sans-serif;
   --body: "IBM Plex Sans", "Helvetica Neue", Arial, sans-serif;
@@ -318,3 +320,75 @@ td:first-child { white-space: nowrap; font-variant-numeric: tabular-nums; }
 @media (max-width: 480px) { .footer-grid { grid-template-columns: minmax(0, 1fr); } }
 
 @media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+
+/* ---------- Startsidans hero ---------- */
+
+.hero { border-bottom: 1px solid var(--rule); overflow: hidden; }
+.hero .wrap { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: 40px; align-items: stretch; padding-block: 56px 0; }
+.hero .wrap > * { min-width: 0; }
+.hero-text { display: flex; flex-direction: column; padding-bottom: 56px; }
+.display { font-size: clamp(44px, 5.8vw, 80px); line-height: 0.95; letter-spacing: -0.035em; font-weight: 700; }
+.display span { color: var(--accent); }
+.hero .intro { margin-top: 28px; }
+.picks { list-style: none; margin-top: auto; padding-top: 40px; border-bottom: 1px solid var(--rule); }
+.picks a {
+  display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 4px 16px; align-items: center;
+  padding: 16px 0; border-top: 1px solid var(--rule); text-decoration: none; color: var(--ink);
+  transition: padding 0.25s ease, color 0.25s ease;
+}
+.picks a strong { font-family: var(--display); font-size: 21px; font-weight: 600; letter-spacing: -0.01em; }
+.picks a small { grid-column: 1; color: var(--ink-2); font-size: 14.5px; }
+.picks a .arrow { grid-row: 1 / span 2; grid-column: 2; font-size: 22px; transition: transform 0.25s ease; }
+.picks a:hover, .picks a:focus-visible { color: var(--accent); padding-left: 10px; }
+.picks a:hover .arrow, .picks a:focus-visible .arrow { transform: translateX(4px); }
+.hero-model { position: relative; margin-right: calc(-1 * max(var(--gutter-r), 32px)); }
+.hero-model .model { aspect-ratio: auto; height: 100%; min-height: 560px; border: 0; border-left: 1px solid var(--rule); }
+.hero-model .hint { position: absolute; left: 20px; bottom: 16px; font-size: 13px; color: var(--ink-2); pointer-events: none; }
+.label.is-active > span { background: var(--accent); border-color: var(--accent); color: #ffffff; }
+.label.is-active > span::after { background: var(--accent); }
+@media (max-width: 900px) {
+  .hero .wrap { grid-template-columns: minmax(0, 1fr); padding-block: 32px 0; gap: 8px; }
+  .hero-text { padding-bottom: 8px; }
+  .picks { padding-top: 28px; }
+  .hero-model { margin-left: calc(-1 * var(--gutter-l)); margin-right: calc(-1 * var(--gutter-r)); }
+  .hero-model .model { min-height: 0; aspect-ratio: 1 / 1; height: auto; border-left: 0; border-top: 1px solid var(--rule); }
+}
+
+/* ---------- Koboltblått band ---------- */
+
+.band { background: var(--accent); color: #ffffff; padding-block: 72px; }
+.band .h2, .band h3 { color: #ffffff; }
+.band p { color: var(--accent-soft); }
+.band a { color: #ffffff; }
+.band .section-title p { color: var(--accent-soft); }
+@media (max-width: 900px) { .band { padding-block: 48px; } }
+
+/* ---------- Tidsdiagram över uppdrag ---------- */
+
+.gantt-wrap { overflow-x: auto; }
+.gantt {
+  --months: 30;
+  min-width: 720px; display: grid; grid-template-columns: repeat(var(--months), minmax(0, 1fr));
+  row-gap: 10px; border-top: 2px solid currentColor; padding-top: 14px; position: relative;
+}
+.gantt-axis { display: contents; }
+.gantt-axis span { font-size: 13px; font-variant-numeric: tabular-nums; opacity: 0.85; border-left: 1px solid rgba(255, 255, 255, 0.35); padding-left: 6px; padding-bottom: 6px; }
+.gantt-bar {
+  background: #ffffff; color: var(--ink); padding: 12px 14px; min-height: 76px;
+  display: flex; flex-direction: column; justify-content: space-between; gap: 6px;
+  text-decoration: none; transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.gantt-bar:hover { transform: translateY(-2px); box-shadow: 0 8px 0 var(--accent-deep); }
+.gantt-bar b { font-family: var(--display); font-weight: 600; font-size: 17px; line-height: 1.2; }
+.gantt-bar small { font-size: 13px; color: var(--ink-2); font-variant-numeric: tabular-nums; }
+.band .gantt-bar { color: var(--ink); }
+.band .gantt-bar small { color: var(--ink-2); }
+.gantt-note { margin-top: 18px; font-size: 14px; }
+.section .gantt { border-top-color: var(--ink); }
+.section .gantt-axis span { border-left-color: var(--rule-strong); color: var(--ink-2); }
+.section .gantt-bar { background: var(--accent); color: #ffffff; }
+.section .gantt-bar small { color: var(--accent-soft); }
+.section .gantt-bar:hover { box-shadow: 0 8px 0 var(--accent-soft); }
+
+/* Större rubriker på undersidor */
+.page-head .h1 { font-size: clamp(40px, 5.6vw, 76px); line-height: 0.98; letter-spacing: -0.03em; font-weight: 700; }
