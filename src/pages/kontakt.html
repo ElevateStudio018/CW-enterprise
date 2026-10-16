@@ -1,8 +1,8 @@
 <!doctype html>
-<html lang="sv" class="no-js">
+<html lang="sv">
 <head>
 {{> head}}
-<title>Kontakt | CW Enterprise AB</title>
+<title>Kontakt – CW Enterprise AB</title>
 <meta name="description" content="Kontakta CW Enterprise AB, Kullaviks Kvarnfallsväg 11, 429 33 Kullavik. Telefon +46 709 188 160, e-post info@cwenterprise.se.">
 </head>
 <body data-page="kontakt">
@@ -10,106 +10,57 @@
 
 <main id="main">
 
-  <section class="page-hero page-hero--short">
-    <div class="scene" data-scene="terrain" data-offset="none" aria-hidden="true"></div>
+  <section class="page-head page-head--text">
     <div class="wrap">
-      <nav class="crumbs" aria-label="Brödsmulor"><a href="index.html">Hem</a><span aria-hidden="true">/</span><span>Kontakt</span></nav>
-      <p class="eyebrow">Kontakt</p>
-      <h1 class="h1" data-split>Berätta vad<br><em>ni behöver.</em></h1>
+      <div>
+        <nav class="crumbs" aria-label="Brödsmulor"><a href="index.html">Start</a><span aria-hidden="true">›</span><span>Kontakt</span></nav>
+        <h1 class="h1">Kontakt</h1>
+        <p class="intro">Ring, mejla eller skicka en förfrågan via formuläret.</p>
+      </div>
     </div>
   </section>
 
   <section class="section">
     <div class="wrap contact-grid">
       <div>
-        <dl class="contact-card reveal">
+        <h2 class="h3">CW Enterprise AB</h2>
+        <dl class="facts mt">
           <div><dt>Telefon</dt><dd><a href="tel:+46709188160">+46 709 188 160</a></dd></div>
           <div><dt>E-post</dt><dd><a href="mailto:info@cwenterprise.se">info@cwenterprise.se</a></dd></div>
-          <div><dt>Adress</dt><dd><a href="https://www.google.com/maps/search/?api=1&amp;query=Kullaviks+Kvarnfallsv%C3%A4g+11%2C+429+33+Kullavik" target="_blank" rel="noopener">Kullaviks Kvarnfallsväg 11<br>429 33 Kullavik</a></dd></div>
+          <div><dt>Adress</dt><dd>Kullaviks Kvarnfallsväg 11<br>429 33 Kullavik<br><a href="https://www.google.com/maps/search/?api=1&amp;query=Kullaviks+Kvarnfallsv%C3%A4g+11%2C+429+33+Kullavik" target="_blank" rel="noopener">Visa på karta ↗</a></dd></div>
         </dl>
-
-        <div class="mt-m reveal">
-          <p class="divider-label">Byggprojekt</p>
-          <p class="muted">För bygg- och renoveringsprojekt kan ni också kontakta <strong>Västkust Bygg &amp; Montage AB</strong> direkt.</p>
-          <p><a href="tel:+46768820333">076-882 03 33</a> · <a href="mailto:info@vastkustbygg.se">info@vastkustbygg.se</a><br><span class="muted">Måndag–fredag 08.00–17.00</span></p>
-        </div>
+        <h2 class="h3 mt">Byggprojekt</h2>
+        <p class="muted mt">För bygg- och renoveringsprojekt kan ni också kontakta Västkust Bygg &amp; Montage AB direkt.</p>
+        <dl class="facts">
+          <div><dt>Telefon</dt><dd><a href="tel:+46768820333">076-882 03 33</a></dd></div>
+          <div><dt>E-post</dt><dd><a href="mailto:info@vastkustbygg.se">info@vastkustbygg.se</a></dd></div>
+          <div><dt>Öppettider</dt><dd>Måndag–fredag 08.00–17.00</dd></div>
+        </dl>
       </div>
 
-      <form class="form reveal reveal-d1" data-contact-form novalidate>
+      <form class="form" data-contact-form novalidate>
         <div class="field field--full">
           <fieldset>
-            <legend>Vad gäller det?</legend>
-            <div class="chips">
-              <label class="chip"><input type="checkbox" name="omrade" value="Management Consulting"><span>Management Consulting</span></label>
-              <label class="chip"><input type="checkbox" name="omrade" value="Fastighetsförvaltning"><span>Fastighetsförvaltning</span></label>
-              <label class="chip"><input type="checkbox" name="omrade" value="Bygg & Montage"><span>Bygg &amp; Montage</span></label>
-              <label class="chip"><input type="checkbox" name="omrade" value="Annat"><span>Annat</span></label>
+            <legend>Vad gäller förfrågan?</legend>
+            <div class="checks">
+              <label><input type="checkbox" id="o-konsult" name="omrade" value="Management Consulting"> Management Consulting</label>
+              <label><input type="checkbox" id="o-forv" name="omrade" value="Fastighetsförvaltning"> Fastighetsförvaltning</label>
+              <label><input type="checkbox" id="o-bygg" name="omrade" value="Bygg"> Bygg</label>
+              <label><input type="checkbox" id="o-annat" name="omrade" value="Annat"> Annat</label>
             </div>
           </fieldset>
         </div>
-        <div class="field">
-          <label for="f-namn">Namn</label>
-          <input id="f-namn" name="namn" type="text" autocomplete="name" required>
-        </div>
-        <div class="field">
-          <label for="f-foretag">Företag / organisation</label>
-          <input id="f-foretag" name="foretag" type="text" autocomplete="organization">
-        </div>
-        <div class="field">
-          <label for="f-epost">E-post</label>
-          <input id="f-epost" name="epost" type="email" autocomplete="email" required>
-        </div>
-        <div class="field">
-          <label for="f-telefon">Telefon</label>
-          <input id="f-telefon" name="telefon" type="tel" autocomplete="tel">
-        </div>
-        <div class="field field--full">
-          <label for="f-start">Önskad start</label>
-          <select id="f-start" name="start">
-            <option value="">Välj</option>
-            <option>Så snart som möjligt</option>
-            <option>Inom tre månader</option>
-            <option>Senare i år</option>
-            <option>Vet inte än</option>
-          </select>
-        </div>
-        <div class="field field--full">
-          <label for="f-meddelande">Beskriv kort vad ni behöver</label>
-          <textarea id="f-meddelande" name="meddelande" required></textarea>
-        </div>
+        <div class="field"><label for="f-namn">Namn</label><input id="f-namn" name="namn" type="text" autocomplete="name" required></div>
+        <div class="field"><label for="f-foretag">Företag</label><input id="f-foretag" name="foretag" type="text" autocomplete="organization"></div>
+        <div class="field"><label for="f-epost">E-post</label><input id="f-epost" name="epost" type="email" autocomplete="email" required></div>
+        <div class="field"><label for="f-telefon">Telefon</label><input id="f-telefon" name="telefon" type="tel" autocomplete="tel"></div>
+        <div class="field field--full"><label for="f-meddelande">Meddelande</label><textarea id="f-meddelande" name="meddelande" required></textarea></div>
         <div class="form-foot">
-          <p>Formuläret öppnar ert e-postprogram med meddelandet ifyllt. Inga uppgifter sparas på webbplatsen. Läs mer om <a href="integritet.html">integritet</a>.</p>
-          <button class="btn btn-primary" type="submit">Skapa meddelande <span aria-hidden="true">→</span></button>
+          <p>Formuläret öppnar ert e-postprogram med meddelandet ifyllt. Inga uppgifter sparas på webbplatsen.</p>
+          <button class="btn btn-primary" type="submit">Skapa e-postmeddelande</button>
         </div>
         <p class="form-status" data-form-status role="status" aria-live="polite"></p>
       </form>
-    </div>
-  </section>
-
-  <section class="section section--ink2 section--tight">
-    <div class="wrap">
-      <div class="map-frame reveal" role="img" aria-label="Schematisk karta: Kullavik ligger vid kusten söder om Göteborg, i Kungsbacka kommun.">
-        <svg viewBox="0 0 1200 520" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
-          <defs>
-            <pattern id="dots" width="16" height="16" patternUnits="userSpaceOnUse"><circle cx="2" cy="2" r="1" fill="#8196a8" opacity=".22"/></pattern>
-          </defs>
-          <rect width="1200" height="520" fill="url(#dots)"/>
-          <path d="M0 0H470C455 40 480 70 450 110S420 170 455 210 470 260 430 300 400 360 440 400 455 470 420 520H0Z" fill="#0c0e11"/>
-          <path d="M470 0C455 40 480 70 450 110S420 170 455 210 470 260 430 300 400 360 440 400 455 470 420 520" fill="none" stroke="#c9a66b" stroke-opacity=".5"/>
-          <g font-family="JetBrains Mono, monospace" font-size="13" letter-spacing="2" fill="#9b978e">
-            <circle cx="640" cy="90" r="5" fill="#9b978e"/><text x="656" y="95">GÖTEBORG</text>
-            <circle cx="560" cy="250" r="4" fill="#9b978e"/><text x="574" y="255">LINDOME</text>
-            <circle cx="700" cy="420" r="4" fill="#9b978e"/><text x="714" y="425">KUNGSBACKA</text>
-            <text x="120" y="270" fill="#8196a8" opacity=".6">KATTEGATT</text>
-          </g>
-          <g>
-            <circle cx="470" cy="330" r="28" fill="none" stroke="#c9a66b" stroke-opacity=".35"/>
-            <circle cx="470" cy="330" r="7" fill="#c9a66b"/>
-            <text x="512" y="326" font-family="Inter Tight, sans-serif" font-size="22" fill="#e9e5dc">CW Enterprise AB</text>
-            <text x="512" y="350" font-family="JetBrains Mono, monospace" font-size="12" letter-spacing="2" fill="#c9a66b">KULLAVIK</text>
-          </g>
-        </svg>
-      </div>
     </div>
   </section>
 

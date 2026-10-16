@@ -39,6 +39,7 @@ for (const f of await readdir(join(src, 'pages'))) {
 }
 
 await cp(join(root, 'assets'), join(out, 'assets'), { recursive: true });
+await writeFile(join(out, '.nojekyll'), '');
 for (const f of ['robots.txt', 'sitemap.xml']) {
   await cp(join(root, f), join(out, f)).catch(() => {});
 }
