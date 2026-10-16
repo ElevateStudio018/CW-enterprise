@@ -3,9 +3,9 @@
 <head>
 {{> head}}
 <title>Management Consulting – CW Enterprise AB</title>
-<meta name="description" content="Projektledning, verksamhetsutveckling, processanalys och IS/IT. Erfarenhet av europeiska ERP- och CRM/CPQ-projekt, bland annat Microsoft Business Central.">
+<meta name="description" content="Projektledning, affärsutveckling och affärsprocessanalys, IS/IT. Slutförda uppdrag inom ERP och CRM/CPQ för Logisnext Mitsubishi Forklift Trucks Europe.">
 </head>
-<body data-page="konsulting">
+<body data-page="konsulting" class="t-konsult">
 {{> header}}
 
 <main id="main">
@@ -13,12 +13,16 @@
   <section class="page-head">
     <div class="wrap">
       <div>
-        <nav class="crumbs" aria-label="Brödsmulor"><a href="index.html">Start</a><span aria-hidden="true">›</span><a href="verksamheter.html">Verksamheter</a><span aria-hidden="true">›</span><span>Management Consulting</span></nav>
+        <span class="kicker">Företagets tjänster</span>
         <h1 class="h1">Management Consulting</h1>
-        <p class="intro">Projektledning och analys för organisationer som ska ändra sitt arbetssätt, ofta i samband med byte av affärssystem. De senaste uppdragen har omfattat samtliga europeiska affärsenheter i en internationell industrikoncern.</p>
+        <p class="intro">Projektledning, affärsutveckling och affärsprocessanalys, IS/IT.</p>
+        <div class="head-actions">
+          <a class="btn btn-solid" href="#uppdrag">Slutförda uppdrag</a>
+          <a class="btn" href="kontakt.html">Kontakta oss</a>
+        </div>
       </div>
       <figure class="figure">
-        <div class="model" data-model="system">
+        <div class="model" data-model="system" data-accent="#34506e">
           <div class="model-fallback">Modell av ett systemlandskap</div>
           <div class="labels" aria-hidden="true">
             <div class="label" data-anchor="0"><span>ERP</span></div>
@@ -27,7 +31,7 @@
             <div class="label" data-anchor="3"><span>Affärsenheter</span></div>
           </div>
         </div>
-        <figcaption>Förenklat systemlandskap: affärssystem som delas av flera affärsenheter.</figcaption>
+        <figcaption>Affärssystem som delas av flera affärsenheter, som i uppdragen nedan.</figcaption>
       </figure>
     </div>
   </section>
@@ -36,55 +40,42 @@
     <div class="wrap cols">
       <div class="cols-head"><h2 class="h2">Tjänster</h2></div>
       <ul class="list">
-        <li>
-          <h3>Projektledning</h3>
-          <div><p>Ansvar för att ett projekt levererar det som är beslutat, i tid och inom budget. Det omfattar planering, resurser, risker och rapportering till styrgrupp och beställare. Uppdragen har spänt över flera länder och affärsenheter.</p>
-          <ul class="tags"><li>Projektplan och tidplan</li><li>Styrgrupp</li><li>Risker och ändringar</li><li>Leverantörsstyrning</li></ul></div>
-        </li>
-        <li>
-          <h3>Verksamhetsutveckling och processanalys</h3>
-          <div><p>Innan ett system väljs behöver verksamheten veta hur arbetet går till i dag och hur det ska gå till. Analysen kartlägger flöden, roller och informationsbehov och leder fram till krav som går att följa upp.</p>
-          <ul class="tags"><li>Nulägesanalys</li><li>Processkartläggning</li><li>Kravställning</li></ul></div>
-        </li>
-        <li>
-          <h3>IS/IT</h3>
-          <div><p>Erfarenhet av affärssystem från Proof of Concept och analys till utveckling och driftsättning, senast inom ERP (Microsoft Business Central) och CRM/CPQ.</p>
-          <ul class="tags"><li>ERP</li><li>CRM</li><li>CPQ</li><li>Microsoft Business Central</li></ul></div>
-        </li>
+        <li><h3>Projektledning</h3><p>Att leda projekt från plan till leverans: tidplan, budget, risker och rapportering till styrgrupp och beställare.</p></li>
+        <li><h3>Affärsutveckling</h3><p>Att utveckla verksamheten så att den möter nya mål och krav, ofta i samband med att nya system införs.</p></li>
+        <li><h3>Affärsprocessanalys</h3><p>Att kartlägga hur arbetet går till i dag, hitta förbättringar och formulera krav på nya lösningar.</p></li>
+        <li><h3>IS/IT</h3><p>Affärssystem i hela kedjan, från Proof of Concept och analys till utveckling och idrifttagande. Senast inom ERP (Microsoft Business Central) och CRM/CPQ.</p></li>
       </ul>
     </div>
   </section>
 
-  <section class="section section--grey">
+  <section class="band" id="uppdrag">
     <div class="wrap">
-      <div class="section-title">
-        <h2 class="h2">Faserna i ett systemprojekt</h2>
-        <p>Ett uppdrag kan omfatta en fas eller hela kedjan. Alla fyra faser ingår i de tre uppdrag som genomförts hos samma kund sedan 2023.</p>
+      <div class="section-head">
+        <div><span class="kicker">2023–2026</span><h2 class="h2">Slutförda uppdrag</h2></div>
+        <p>Alla tre uppdragen har gällt samtliga europeiska affärsenheter inom Logisnext Mitsubishi Forklift Trucks Europe.</p>
       </div>
-      <ol class="process">
-        <li><h3>Proof of Concept</h3><p>Prövar om en tänkt lösning klarar de viktigaste flödena innan ett större beslut fattas.</p></li>
-        <li><h3>Analys</h3><p>Processer, krav, data och integrationer beskrivs för alla berörda enheter. Resultatet är underlag för införandet.</p></li>
-        <li><h3>Utveckling</h3><p>Lösningen konfigureras och byggs tillsammans med leverantören och testas mot kraven.</p></li>
-        <li><h3>Driftsättning</h3><p>Utbildning, datamigrering och övergång till det nya systemet.</p></li>
-      </ol>
+      {{> gantt}}
     </div>
   </section>
 
-  <section class="section">
+  <section class="section" id="erp">
     <div class="wrap cols">
-      <div class="cols-head"><h2 class="h2">Vanliga frågor</h2></div>
-      <div class="faq">
-        <details><summary>Tar ni enskilda faser eller bara hela projekt?</summary><div><p>Båda. En Proof of Concept, ett utvecklings- och driftsättningsprojekt och en analysfas har genomförts som tre separata uppdrag hos samma kund. Se <a href="uppdrag.html">Uppdrag</a>.</p></div></details>
-        <details><summary>Vilken roll har ni mot systemleverantören?</summary><div><p>Som projektledare företräder vi beställaren och följer upp att leveransen motsvarar krav, tidplan och budget.</p></div></details>
-        <details><summary>Arbetar ni internationellt?</summary><div><p>Ja. De senaste uppdragen har omfattat alla europeiska affärsenheter i en internationell koncern.</p></div></details>
-        <details><summary>Hur börjar ett uppdrag?</summary><div><p>Med ett samtal om vad som ska uppnås och vad som redan är gjort. Därefter kommer ett skriftligt förslag på omfattning, upplägg och tidsåtgång.</p></div></details>
-      </div>
+      <div class="cols-head"><span class="kicker">Juni 2025 – april 2026</span><h2 class="h2">Analysfas, ERP</h2></div>
+      <div class="prose"><p>Projektledare för analysfasen inför implementation av ett nytt ERP-system (Microsoft Business Central) för alla europeiska affärsenheter inom Logisnext Mitsubishi Forklift Trucks Europe.</p></div>
     </div>
   </section>
-
-  <div class="wrap next">
-    <a href="forvaltning.html"><small>Nästa verksamhet</small>Fastighetsförvaltning</a>
-  </div>
+  <section class="section section--tint" id="crm">
+    <div class="wrap cols">
+      <div class="cols-head"><span class="kicker">Juni 2024 – maj 2025</span><h2 class="h2">CRM/CPQ-system</h2></div>
+      <div class="prose"><p>Projektledare för utveckling och idrifttagande av ett CRM/CPQ-system för alla europeiska affärsenheter inom Logisnext Mitsubishi Forklift Trucks Europe.</p></div>
+    </div>
+  </section>
+  <section class="section" id="poc">
+    <div class="wrap cols">
+      <div class="cols-head"><span class="kicker">November 2023 – april 2024</span><h2 class="h2">Proof of Concept, ERP</h2></div>
+      <div class="prose"><p>Projektledare för Proof of Concept för nytt ERP-system för alla europeiska affärsenheter inom Logisnext Mitsubishi Forklift Trucks Europe.</p></div>
+    </div>
+  </section>
 
 </main>
 

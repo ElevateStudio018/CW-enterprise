@@ -2,8 +2,9 @@
 <html lang="sv">
 <head>
 {{> head}}
-<title>CW Enterprise AB – konsult, förvaltning och bygg</title>
-<meta name="description" content="CW Enterprise AB i Kullavik leder, utvecklar och förvaltar projekt. Koncernen arbetar med management consulting, fastighetsförvaltning och byggtjänster genom dotterbolaget Västkust Bygg & Montage AB.">
+<title>CW Enterprise AB – Leder, utvecklar och förvaltar dina projekt</title>
+<meta name="description" content="CW Enterprise AB i Kullavik: management consulting, finansiell och teknisk fastighetsförvaltning samt byggtjänster via helägda Västkust Bygg & Montage AB.">
+<link rel="preload" as="image" href="assets/img/fjall-1200.jpg" imagesrcset="assets/img/fjall-1200.jpg 1200w, assets/img/fjall-2400.jpg 2400w" imagesizes="100vw">
 </head>
 <body data-page="hem">
 {{> header}}
@@ -11,69 +12,61 @@
 <main id="main">
 
   <section class="hero">
-    <div class="wrap">
-      <div class="hero-text">
-        <h1 class="display">Leder, utvecklar <span>och förvaltar.</span></h1>
-        <p class="intro">CW Enterprise AB är en koncern i Kullavik med tre verksamheter: projektledning, fastighetsförvaltning och bygg genom dotterbolaget Västkust Bygg &amp; Montage AB.</p>
-        <ul class="picks">
-          <li><a href="konsulting.html" data-highlight="0"><strong>Management Consulting</strong><small>Projektledning, processer och affärssystem</small><span class="arrow" aria-hidden="true">→</span></a></li>
-          <li><a href="forvaltning.html" data-highlight="1"><strong>Fastighetsförvaltning</strong><small>Ekonomisk och teknisk förvaltning</small><span class="arrow" aria-hidden="true">→</span></a></li>
-          <li><a href="bygg.html" data-highlight="2"><strong>Bygg &amp; Montage</strong><small>Nybyggnation, renovering, badrum och kök</small><span class="arrow" aria-hidden="true">→</span></a></li>
-        </ul>
-      </div>
-      <div class="hero-model">
-        <div class="model" data-model="koncern" data-scroll-turn data-zoom="0.78">
-          <div class="model-fallback">Modell av koncernens tre verksamheter</div>
-          <div class="labels" aria-hidden="true">
-            <div class="label" data-anchor="0"><span>Konsult</span></div>
-            <div class="label" data-anchor="1"><span>Förvaltning</span></div>
-            <div class="label" data-anchor="2"><span>Bygg</span></div>
-          </div>
-        </div>
-        <span class="hint">Dra för att vrida modellen</span>
-      </div>
+    <picture>
+      <source media="(max-width: 640px)" srcset="assets/img/fjall-mobil.jpg">
+      <img src="assets/img/fjall-1200.jpg" srcset="assets/img/fjall-1200.jpg 1200w, assets/img/fjall-2400.jpg 2400w" sizes="100vw" alt="En vandrare med ryggsäck på en stig över kalfjället" data-parallax>
+    </picture>
+    <div class="wrap hero-text">
+      <h1>Leder, utvecklar och förvaltar <span>dina projekt!</span></h1>
+    </div>
+    <div class="hero-cta">
+      <a class="btn btn-light" href="#tjanster">Företagets tjänster</a>
+      <a class="btn btn-glass" href="kontakt.html">Kontakta oss</a>
     </div>
   </section>
 
-  <section class="section">
+  <section class="section" id="tjanster">
     <div class="wrap">
-      <div class="section-title">
-        <h2 class="h2">Verksamheter</h2>
-        <p>Verksamheterna kan anlitas var för sig eller tillsammans. Vid kombinerade uppdrag samordnar moderbolaget arbetet.</p>
+      <div class="section-head">
+        <div>
+          <span class="kicker">Företagets tjänster</span>
+          <h2 class="h2">Tre verksamheter, samma ägare</h2>
+          <p class="mt">Projektledning och konsulttjänster, förvaltning av fastigheter och byggtjänster genom vårt helägda dotterbolag. Ni kan anlita oss för en del eller för helheten.</p>
+        </div>
+        <figure class="figure">
+          <div class="model" data-model="koncern" data-scroll-turn data-colors="#34506e,#e2601a,#1f86ec">
+            <div class="model-fallback">Modell av företagets tre verksamheter</div>
+            <div class="labels" aria-hidden="true">
+              <div class="label" data-anchor="0"><span>Konsult</span></div>
+              <div class="label" data-anchor="1"><span>Förvaltning</span></div>
+              <div class="label" data-anchor="2"><span>Bygg</span></div>
+            </div>
+          </div>
+          <figcaption>Dra i modellen för att vrida den. Peka på en tjänst nedan för att se den i modellen.</figcaption>
+        </figure>
       </div>
-      <div class="units">
-        <article class="unit">
-          <h3 class="h3">Management Consulting</h3>
-          <span class="unit-company">CW Enterprise AB</span>
-          <p>Projektledning och analys när en verksamhet ska förändras, ofta i samband med att affärssystem ska utvärderas, införas eller bytas.</p>
-          <ul>
-            <li>Projektledning</li>
-            <li>Verksamhetsutveckling och processanalys</li>
-            <li>IS/IT: ERP, CRM och CPQ</li>
-          </ul>
-          <a class="more" href="konsulting.html">Läs mer om Management Consulting</a>
+
+      <div class="services">
+        <article class="service t-konsult" data-highlight="0">
+          <div class="service-mark">CW</div>
+          <h3>Management Consulting</h3>
+          <p>Projektledning, affärsutveckling och affärsprocessanalys, IS/IT.</p>
+          <ul><li>Projektledning</li><li>Affärsutveckling</li><li>Affärsprocessanalys</li><li>IS/IT: ERP, CRM och CPQ</li></ul>
+          <a class="more stretch" href="konsulting.html">Läs mer <span aria-hidden="true">→</span></a>
         </article>
-        <article class="unit">
-          <h3 class="h3">Fastighetsförvaltning</h3>
-          <span class="unit-company">CW Enterprise AB</span>
-          <p>Ekonomisk och teknisk förvaltning av bostadsfastigheter och kommersiella fastigheter.</p>
-          <ul>
-            <li>Ekonomisk förvaltning</li>
-            <li>Teknisk förvaltning</li>
-            <li>Bostäder och kommersiella lokaler</li>
-          </ul>
-          <a class="more" href="forvaltning.html">Läs mer om förvaltning</a>
+        <article class="service t-forv" data-highlight="1">
+          <div class="service-logo"><img src="assets/img/cwe-fastighetsforvaltning.jpg" alt="CWE Fastighetsförvaltning" width="139" height="64"></div>
+          <h3>Förvaltning</h3>
+          <p>Finansiell och teknisk förvaltning av bostadsfastigheter och kommersiella fastigheter.</p>
+          <ul><li>Finansiell förvaltning</li><li>Teknisk förvaltning</li><li>Bostäder och kommersiella fastigheter</li></ul>
+          <a class="more stretch" href="forvaltning.html">Läs mer <span aria-hidden="true">→</span></a>
         </article>
-        <article class="unit">
-          <h3 class="h3">Bygg &amp; Montage</h3>
-          <span class="unit-company">Västkust Bygg &amp; Montage AB, helägt dotterbolag</span>
-          <p>Byggprojekt från idé till färdigt resultat, för privatpersoner, fastighetsägare och företag.</p>
-          <ul>
-            <li>Nybyggnation</li>
-            <li>Renovering och ombyggnad</li>
-            <li>Badrum, kök och lokalanpassning</li>
-          </ul>
-          <a class="more" href="bygg.html">Läs mer om Bygg &amp; Montage</a>
+        <article class="service t-bygg" data-highlight="2">
+          <div class="service-logo service-logo--dark"><img src="assets/img/vastkust-bygg-montage.jpg" alt="Västkust Bygg &amp; Montage AB" width="123" height="56"></div>
+          <h3>Byggtjänster</h3>
+          <p>Via helägda Västkust Bygg &amp; Montage AB tillhandahåller vi byggtjänster, från idé till färdigt projekt.</p>
+          <ul><li>Nybyggnation</li><li>Renovering och ombyggnad</li><li>Badrum, kök och kontor</li></ul>
+          <a class="more stretch" href="bygg.html">Läs mer <span aria-hidden="true">→</span></a>
         </article>
       </div>
     </div>
@@ -81,30 +74,47 @@
 
   <section class="band">
     <div class="wrap">
-      <div class="section-title">
-        <h2 class="h2">Uppdrag 2023–2026</h2>
-        <p>Tre projekt i följd för Logisnext Mitsubishi Forklift Trucks Europe, alla med samtliga europeiska affärsenheter.</p>
+      <div class="section-head">
+        <div>
+          <span class="kicker">Management Consulting</span>
+          <h2 class="h2">Slutförda uppdrag</h2>
+        </div>
+        <p>Tre uppdrag i följd som projektledare för alla europeiska affärsenheter inom Logisnext Mitsubishi Forklift Trucks Europe.</p>
       </div>
       {{> gantt}}
-      <p class="gantt-note"><a href="uppdrag.html">Läs om uppdragen</a></p>
     </div>
   </section>
 
   <section class="section">
-    <div class="wrap cols">
-      <div class="cols-head">
-        <h2 class="h2">Koncernen i korthet</h2>
+    <div class="wrap">
+      <div class="feature">
+        <div class="feature-logo"><img src="assets/img/vastkust-bygg-montage.jpg" alt="Västkust Bygg &amp; Montage AB" width="750" height="342"></div>
+        <div class="feature-text">
+          <span class="kicker">Byggtjänster</span>
+          <h2 class="h2">Med er hela vägen, från idé till färdigt projekt</h2>
+          <p>Via helägda Västkust Bygg &amp; Montage AB tillhandahåller vi byggtjänster. Vi erbjuder en helhetslösning där kompetens, noggrannhet och tydlighet är viktiga faktorer för oss. Vår erfarenhet och expertis inom byggbranschen gör oss till det optimala valet för ditt projekt.</p>
+          <div class="head-actions">
+            <a class="btn" href="bygg.html">Byggtjänster</a>
+            <a class="btn" href="https://vastkustbygg.se/" target="_blank" rel="noopener">Till Västkust Bygg &amp; Montages hemsida ↗</a>
+          </div>
+        </div>
       </div>
+    </div>
+  </section>
+
+  <section class="section section--tint">
+    <div class="wrap contact">
       <div>
-        <dl class="facts">
-          <div><dt>Moderbolag</dt><dd>CW Enterprise AB</dd></div>
-          <div><dt>Säte</dt><dd>Kullavik, Kungsbacka kommun</dd></div>
-          <div><dt>Verksamheter</dt><dd>Management Consulting, fastighetsförvaltning, byggtjänster</dd></div>
-          <div><dt>Dotterbolag</dt><dd>Västkust Bygg &amp; Montage AB, ägt till 100 %</dd></div>
-          <div><dt>Kontakt</dt><dd>+46 709 188 160 · info@cwenterprise.se</dd></div>
-        </dl>
-        <p class="mt"><a href="koncernen.html">Mer om koncernens struktur</a></p>
+        <span class="kicker">Kontakt</span>
+        <h2 class="h2">Hör av dig</h2>
+        <p class="mt muted">Berätta kort om ditt projekt, så återkommer vi.</p>
+        <div class="contact-card mt">
+          <h3>CW Enterprise AB</h3>
+          <p>Kullaviks Kvarnfallsväg 11<br>429 33 Kullavik</p>
+          <p><a href="tel:+46709188160">+46 709 188 160</a><br><a href="mailto:info@cwenterprise.se">info@cwenterprise.se</a></p>
+        </div>
       </div>
+      {{> form}}
     </div>
   </section>
 

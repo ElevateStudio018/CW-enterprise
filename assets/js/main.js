@@ -24,16 +24,29 @@ if (form) {
     const areas = data.getAll('omrade').join(', ') || 'Ej angivet';
     const body = [
       `Namn: ${data.get('namn')}`,
-      `Företag: ${data.get('foretag') || '–'}`,
       `E-post: ${data.get('epost')}`,
-      `Telefon: ${data.get('telefon') || '–'}`,
       `Gäller: ${areas}`,
       '',
       String(data.get('meddelande') || ''),
     ].join('\n');
     window.location.href = `mailto:info@cwenterprise.se?subject=${encodeURIComponent(`Förfrågan: ${areas}`)}&body=${encodeURIComponent(body)}`;
-    form.querySelector('[data-form-status]').textContent = 'Ert e-postprogram bör nu öppnas med meddelandet ifyllt. Om inget händer, skriv till info@cwenterprise.se.';
+    form.querySelector('[data-form-status]').textContent = 'Ditt e-postprogram bör nu öppnas med meddelandet ifyllt. Om inget händer, skriv direkt till info@cwenterprise.se.';
   });
+}
+
+// Fjällbilden rör sig lite långsammare än sidan, för djupkänsla
+const parallax = document.querySelector('[data-parallax]');
+if (parallax && !reduceMotion) {
+  let ticking = false;
+  window.addEventListener('scroll', () => {
+    if (ticking) return;
+    ticking = true;
+    requestAnimationFrame(() => {
+      const y = Math.min(window.scrollY, 900);
+      parallax.style.transform = `translateY(${y * 0.3}px) scale(1.08)`;
+      ticking = false;
+    });
+  }, { passive: true });
 }
 
 const models = document.querySelectorAll('[data-model]');

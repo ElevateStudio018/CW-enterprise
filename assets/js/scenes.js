@@ -119,6 +119,7 @@ function system(root) {
   // Data som rör sig längs förbindelserna
   const dots = routes.map(() => {
     const d = new THREE.Mesh(new THREE.BoxGeometry(0.1, 0.1, 0.1), new THREE.MeshBasicMaterial({ color: ACCENT }));
+    d.userData.accent = true;
     root.add(d);
     return d;
   });
@@ -179,6 +180,7 @@ function building(root) {
 
   // En våning markeras åt gången
   const mark = new THREE.LineSegments(new THREE.EdgesGeometry(new THREE.BoxGeometry(W + 0.12, H, D + 0.12)), lineMat(ACCENT));
+  mark.userData.accent = true;
   root.add(mark);
 
   return {
@@ -306,18 +308,28 @@ export function mount(el, { reduceMotion = false } = {}) {
 
   // Markera en del av modellen (koboltblå) och tona ned resten
   let active = -1;
+  const partColors = (el.dataset.colors || '').split(',').filter(Boolean).map((c) => new THREE.Color(c.trim()));
+  const tint = (c) => c.clone().lerp(new THREE.Color(0xffffff), 0.8).getHex();
+  if (el.dataset.accent) {
+    root.traverse((o) => { if (o.userData.accent) o.material.color.set(el.dataset.accent); });
+  }
   function paint() {
     (api.parts || []).forEach((p, j) => {
       p.traverse((o) => {
         if (!o.material || !o.material.color) return;
         if (o.userData.base === undefined) o.userData.base = o.material.color.getHex();
         const on = active === j, dim = active !== -1 && !on;
-        if (o.isLineSegments) o.material.color.setHex(on ? ACCENT : o.userData.base);
-        else if (o.isMesh) o.material.color.setHex(on ? (o.userData.base === 0xffffff ? ACCENT_FACE : ACCENT) : dim ? 0xe6e8e4 : o.userData.base);
+        const c = partColors[j] || new THREE.Color(ACCENT);
+        if (o.isLineSegments) o.material.color.setHex(on ? c.getHex() : o.userData.base);
+        else if (o.isMesh) o.material.color.setHex(on ? (o.userData.base === 0xffffff ? tint(c) : c.getHex()) : dim ? 0xe6e8e4 : o.userData.base);
         if (o.isLineSegments) { o.material.transparent = true; o.material.opacity = dim ? 0.25 : 1; }
       });
     });
-    labels.forEach((lab) => lab.classList.toggle('is-active', +lab.dataset.anchor === active));
+    labels.forEach((lab) => {
+      const i = +lab.dataset.anchor;
+      lab.classList.toggle('is-active', i === active);
+      if (partColors[i]) lab.style.setProperty('--hl', '#' + partColors[i].getHexString());
+    });
   }
 
   // Scrollning vrider modellen när den ligger i sidhuvudet

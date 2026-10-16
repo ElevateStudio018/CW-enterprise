@@ -1,6 +1,6 @@
 # CW Enterprise AB – webbplats
 
-Statisk webbplats för koncernen CW Enterprise AB (konsult, förvaltning, bygg) med 3D-scener i Three.js.
+Statisk webbplats för CW Enterprise AB (Management Consulting, CWE Fastighetsförvaltning och byggtjänster via Västkust Bygg & Montage AB). Bygger vidare på den tidigare sidans innehåll, bild och typsnitt (Josefin Sans), med 3D-modeller i Three.js.
 
 ## Bygga och köra lokalt
 

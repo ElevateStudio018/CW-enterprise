@@ -13,54 +13,28 @@
   <section class="page-head page-head--text">
     <div class="wrap">
       <div>
-        <nav class="crumbs" aria-label="Brödsmulor"><a href="index.html">Start</a><span aria-hidden="true">›</span><span>Kontakt</span></nav>
-        <h1 class="h1">Kontakt</h1>
-        <p class="intro">Ring, mejla eller skicka en förfrågan via formuläret.</p>
+        <span class="kicker">Kontakt</span>
+        <h1 class="h1">Hör av dig</h1>
+        <p class="intro">Ring, mejla eller skriv några rader om ditt projekt.</p>
       </div>
     </div>
   </section>
 
   <section class="section">
-    <div class="wrap contact-grid">
+    <div class="wrap contact">
       <div>
-        <h2 class="h3">CW Enterprise AB</h2>
-        <dl class="facts mt">
-          <div><dt>Telefon</dt><dd><a href="tel:+46709188160">+46 709 188 160</a></dd></div>
-          <div><dt>E-post</dt><dd><a href="mailto:info@cwenterprise.se">info@cwenterprise.se</a></dd></div>
-          <div><dt>Adress</dt><dd>Kullaviks Kvarnfallsväg 11<br>429 33 Kullavik<br><a href="https://www.google.com/maps/search/?api=1&amp;query=Kullaviks+Kvarnfallsv%C3%A4g+11%2C+429+33+Kullavik" target="_blank" rel="noopener">Visa på karta ↗</a></dd></div>
-        </dl>
-        <h2 class="h3 mt">Byggprojekt</h2>
-        <p class="muted mt">För bygg- och renoveringsprojekt kan ni också kontakta Västkust Bygg &amp; Montage AB direkt.</p>
-        <dl class="facts">
-          <div><dt>Telefon</dt><dd><a href="tel:+46768820333">076-882 03 33</a></dd></div>
-          <div><dt>E-post</dt><dd><a href="mailto:info@vastkustbygg.se">info@vastkustbygg.se</a></dd></div>
-          <div><dt>Öppettider</dt><dd>Måndag–fredag 08.00–17.00</dd></div>
-        </dl>
+        <div class="contact-card">
+          <h3>CW Enterprise AB</h3>
+          <p>Kullaviks Kvarnfallsväg 11<br>429 33 Kullavik<br><a href="https://www.google.com/maps/search/?api=1&amp;query=Kullaviks+Kvarnfallsv%C3%A4g+11%2C+429+33+Kullavik" target="_blank" rel="noopener">Visa på karta ↗</a></p>
+          <p><a href="tel:+46709188160">+46 709 188 160</a><br><a href="mailto:info@cwenterprise.se">info@cwenterprise.se</a></p>
+        </div>
+        <div class="contact-card t-bygg">
+          <h3>Västkust Bygg &amp; Montage AB</h3>
+          <p>För bygg- och renoveringsprojekt.</p>
+          <p><a href="tel:+46768820333">076-882 03 33</a><br><a href="mailto:info@vastkustbygg.se">info@vastkustbygg.se</a><br>Måndag–fredag 08.00–17.00</p>
+        </div>
       </div>
-
-      <form class="form" data-contact-form novalidate>
-        <div class="field field--full">
-          <fieldset>
-            <legend>Vad gäller förfrågan?</legend>
-            <div class="checks">
-              <label><input type="checkbox" id="o-konsult" name="omrade" value="Management Consulting"> Management Consulting</label>
-              <label><input type="checkbox" id="o-forv" name="omrade" value="Fastighetsförvaltning"> Fastighetsförvaltning</label>
-              <label><input type="checkbox" id="o-bygg" name="omrade" value="Bygg"> Bygg</label>
-              <label><input type="checkbox" id="o-annat" name="omrade" value="Annat"> Annat</label>
-            </div>
-          </fieldset>
-        </div>
-        <div class="field"><label for="f-namn">Namn</label><input id="f-namn" name="namn" type="text" autocomplete="name" required></div>
-        <div class="field"><label for="f-foretag">Företag</label><input id="f-foretag" name="foretag" type="text" autocomplete="organization"></div>
-        <div class="field"><label for="f-epost">E-post</label><input id="f-epost" name="epost" type="email" autocomplete="email" required></div>
-        <div class="field"><label for="f-telefon">Telefon</label><input id="f-telefon" name="telefon" type="tel" autocomplete="tel"></div>
-        <div class="field field--full"><label for="f-meddelande">Meddelande</label><textarea id="f-meddelande" name="meddelande" required></textarea></div>
-        <div class="form-foot">
-          <p>Formuläret öppnar ert e-postprogram med meddelandet ifyllt. Inga uppgifter sparas på webbplatsen.</p>
-          <button class="btn btn-primary" type="submit">Skapa e-postmeddelande</button>
-        </div>
-        <p class="form-status" data-form-status role="status" aria-live="polite"></p>
-      </form>
+      {{> form}}
     </div>
   </section>
 
