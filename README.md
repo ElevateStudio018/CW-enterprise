@@ -1,25 +1,41 @@
-# CW Enterprise AB – webbplats
+# CW Enterprise AB – hemsida med adminpanel
 
-Statisk webbplats för CW Enterprise AB (Management Consulting, CWE Fastighetsförvaltning och byggtjänster via Västkust Bygg & Montage AB). Bygger vidare på den tidigare sidans innehåll, bild och typsnitt (Josefin Sans), med 3D-modeller i Three.js.
+Hemsida för CW Enterprise AB (Management Consulting, CWE Fastighetsförvaltning och byggtjänster via helägda Västkust
+Bygg & Montage AB), med samma adminpanel som Västkust Bygg & Montages nya hemsida: ägaren ändrar texter, bilder,
+färger och sidor själv, får förfrågningarna i panelen och kan be AI-assistenten om ändringar.
 
-## Bygga och köra lokalt
+- Hemsidan: https://elevatestudio018.github.io/CW-enterprise/
+- Adminpanelen: https://elevatestudio018.github.io/CW-enterprise/admin/
+- Supabase-projekt: `cw-enterprise` (ref `chnvmoxbsrefeahqgfht`, Stockholm)
+
+Kvar att göra för att komma igång: se [SETUP.md](SETUP.md).
+
+## Så hänger det ihop
+
+- **Next.js** med statisk export (basePath `/CW-enterprise`). Allt innehåll är ett dokument (`lib/site/schema.ts`);
+  varje sida är en lista sektioner som ritas av `components/sections/`.
+- **Utseendet** kommer från temat i adminpanelen: Josefin Sans (rubriker, som på den tidigare hemsidan), Nunito Sans,
+  och färgerna från loggorna. `app/site.css` har stilarna.
+- **Egna sektionstyper för CW:** *Tidslinje* (uppdrag på en tidsskala) och *3D-modell* (Three.js:
+  `components/sections/model/`). Båda går att lägga till och ändra i adminpanelen.
+- **Supabase** (`supabase/`): databas, Edge Functions för publicering, förfrågningar, förslag, inbjudningar och AI.
+- **Publicering:** `.github/workflows/deploy-pages.yml` bygger från det publicerade innehållet i Supabase och lägger
+  sajten på grenen `gh-pages`. Knappen Publicera i adminpanelen startar samma workflow.
+
+## Utveckla
 
 ```bash
-npm run build   # skapar dist/
-npm run serve   # bygger och startar http://localhost:8080
+npm ci
+npm run dev                       # http://localhost:3000
+GITHUB_PAGES=true npm run build   # som på GitHub Pages, till out/
+python3 tools/make_baseline.py    # ursprungsinnehållet, content/baseline.json
+node scripts/sync-shared.mjs      # efter ändringar i lib/site eller content/baseline.json
+node scripts/bundle-functions.mjs # paketerar Edge Functions till supabase/bundles/
 ```
 
-`dist/` är det som laddas upp till webbhotellet.
+## Innehållet – gå igenom
 
-Förhandsvisning: https://elevatestudio018.github.io/CW-enterprise/ (GitHub Pages, publiceras från branchen `gh-pages`, som innehåller en byggd kopia av `dist/`).
-
-## Struktur
-
-- `src/pages/` – en fil per sida. `{{> header}}`, `{{> head}}`, `{{> footer}}` ersätts vid bygget.
-- `src/partials/` – gemensam head, header (meny) och footer.
-- `assets/css/style.css` – all styling (färger och typsnitt överst i `:root`).
-- `assets/js/main.js` – meny och kontaktformulär.
-- `assets/js/scenes.js` – 3D-modellerna. Ett element med `data-model="koncern|system|building|frame"` får en modell.
-
-3D laddas bara om webbläsaren har WebGL. Med "reducerad rörelse" påslaget visas en stillbild.
-Kontaktformuläret har ingen server, utan öppnar besökarens e-postprogram.
+Från den tidigare cwenterprise.se: rubriken, tjänsternas korttexter, uppdragen, kontaktuppgifterna, fjällbilden och
+CWE-loggan. Från vastkustbygg.se: byggtjänsterna, certifikaten och projektbilderna. Förslag att bekräfta (märkta
+FÖRSLAG i `tools/make_baseline.py`): de längre texterna om Management Consulting och vad förvaltningen omfattar.
+Org.nr saknas och visas inte.

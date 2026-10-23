@@ -1,0 +1,1031 @@
+{
+  "schemaVersion": 1,
+  "theme": {
+    "colors": {
+      "primary": "#34506E",
+      "secondary": "#1C1F22",
+      "accent": "#E2601A",
+      "background": "#FBFBF9",
+      "surface": "#EFF1ED",
+      "text": "#4A5157",
+      "heading": "#1C1F22",
+      "muted": "#5A6065",
+      "subtle": "#C7CCC6",
+      "border": "#DCDFDA",
+      "input": "#FFFFFF",
+      "link": "#34506E",
+      "button": "#1C1F22",
+      "buttonHover": "#34506E",
+      "buttonText": "#FFFFFF",
+      "navigation": "#FBFBF9",
+      "navigationText": "#1C1F22",
+      "footer": "#1C1F22",
+      "footerText": "#C4C8CC",
+      "onPrimary": "#FFFFFF",
+      "success": "#1E7B3A",
+      "warning": "#B45309",
+      "error": "#B91C1C"
+    },
+    "fonts": {
+      "heading": {
+        "family": "Josefin Sans",
+        "category": "sans-serif"
+      },
+      "body": {
+        "family": "Nunito Sans",
+        "category": "sans-serif"
+      },
+      "button": {
+        "family": "Nunito Sans",
+        "category": "sans-serif"
+      }
+    }
+  },
+  "settings": {
+    "siteName": "CW Enterprise AB",
+    "siteUrl": "https://elevatestudio018.github.io/CW-enterprise",
+    "language": "sv",
+    "favicon": {
+      "src": "/icon.png",
+      "variants": [],
+      "alt": ""
+    },
+    "logo": {
+      "kind": "wordmark"
+    },
+    "analyticsId": "",
+    "maintenance": {
+      "enabled": false,
+      "heading": "Vi uppdaterar hemsidan",
+      "text": "Sidan är snart tillbaka. Under tiden når du oss på telefon eller e-post."
+    }
+  },
+  "company": {
+    "legalName": "CW Enterprise AB",
+    "shortName": "CW Enterprise AB",
+    "foundedYear": 2023,
+    "employees": 0,
+    "city": "Kungsbacka",
+    "serviceArea": "Kullavik och Göteborgsregionen",
+    "address": {
+      "street": "Kullaviks Kvarnfallsväg 11",
+      "postalCode": "429 33",
+      "city": "Kullavik",
+      "country": "SE",
+      "geo": {
+        "lat": 57.5508,
+        "lng": 11.9636
+      }
+    },
+    "phone": "+46 709 188 160",
+    "email": "info@cwenterprise.se",
+    "orgNumber": "",
+    "vatNumber": "",
+    "openingHours": "",
+    "social": {
+      "facebook": "",
+      "instagram": "",
+      "linkedin": ""
+    }
+  },
+  "navigation": {
+    "barLinks": {
+      "order": [
+        "uppdrag",
+        "certifikat",
+        "kontakt"
+      ],
+      "items": {
+        "uppdrag": {
+          "label": "Uppdrag",
+          "href": "/#uppdrag"
+        },
+        "certifikat": {
+          "label": "Certifikat",
+          "href": "/certifikat"
+        },
+        "kontakt": {
+          "label": "Kontakt",
+          "href": "/kontakt"
+        }
+      }
+    },
+    "menu": {
+      "order": [
+        "hem",
+        "tjanster",
+        "uppdrag",
+        "certifikat",
+        "kontakt"
+      ],
+      "items": {
+        "hem": {
+          "label": "Start",
+          "href": "/",
+          "kind": "link"
+        },
+        "tjanster": {
+          "label": "Tjänster",
+          "href": "/#tjanster",
+          "kind": "services"
+        },
+        "uppdrag": {
+          "label": "Slutförda uppdrag",
+          "href": "/#uppdrag",
+          "kind": "link"
+        },
+        "certifikat": {
+          "label": "Certifikat (bygg)",
+          "href": "/certifikat",
+          "kind": "link"
+        },
+        "kontakt": {
+          "label": "Kontakt",
+          "href": "/kontakt",
+          "kind": "link"
+        }
+      }
+    },
+    "menuButton": "Kontakta oss"
+  },
+  "footer": {
+    "contactHeading": "Kontakt",
+    "servicesHeading": "Tjänster",
+    "companyHeading": "Företaget",
+    "companyLinks": {
+      "order": [
+        "uppdrag",
+        "certifikat",
+        "vastkust",
+        "kontakt"
+      ],
+      "items": {
+        "uppdrag": {
+          "label": "Slutförda uppdrag",
+          "href": "/#uppdrag"
+        },
+        "certifikat": {
+          "label": "Certifikat och försäkringar",
+          "href": "/certifikat"
+        },
+        "vastkust": {
+          "label": "Västkust Bygg & Montage AB",
+          "href": "https://vastkustbygg.se/"
+        },
+        "kontakt": {
+          "label": "Kontakt",
+          "href": "/kontakt"
+        }
+      }
+    },
+    "button": {
+      "label": "Kontakta oss",
+      "href": "#offert"
+    },
+    "copyrightName": "CW Enterprise AB",
+    "orgLabel": "Org.nr",
+    "vatLabel": "Momsreg.nr"
+  },
+  "form": {
+    "modalHeading": "Skicka en förfrågan",
+    "labels": {
+      "name": "Namn",
+      "phone": "Telefon",
+      "email": "E-post",
+      "workType": "Vad gäller det?",
+      "description": "Meddelande"
+    },
+    "workTypePlaceholder": "Välj tjänst",
+    "descriptionPlaceholder": "Berätta kort om ditt projekt eller din fråga.",
+    "workTypes": {
+      "order": [
+        "t1",
+        "t2",
+        "t3",
+        "t4"
+      ],
+      "items": {
+        "t1": {
+          "label": "Management Consulting"
+        },
+        "t2": {
+          "label": "Förvaltning"
+        },
+        "t3": {
+          "label": "Byggtjänster"
+        },
+        "t4": {
+          "label": "Annat"
+        }
+      }
+    },
+    "contactHint": "Det räcker med telefon eller e-post.",
+    "errors": {
+      "name": "Ange ditt namn.",
+      "contact": "Ange telefonnummer eller e-postadress, så att vi kan nå dig.",
+      "phone": "Ange ett giltigt telefonnummer.",
+      "email": "Ange en giltig e-postadress.",
+      "workType": "Välj vad det gäller."
+    },
+    "submit": "Skicka",
+    "sending": "Skickar…",
+    "sendFailed": "Meddelandet kunde inte skickas. Försök igen eller ring oss på",
+    "closeHint": "Du kan stänga rutan när som helst genom att klicka utanför eller på",
+    "closeHintButton": "X",
+    "confirmation": "Tack! Vi återkommer så snart vi kan.",
+    "emailSubject": "Förfrågan från {namn}"
+  },
+  "ui": {
+    "skipLink": "Hoppa till innehållet",
+    "openMenu": "Öppna meny",
+    "closeMenu": "Stäng meny",
+    "menuLabel": "Meny",
+    "mainMenuLabel": "Huvudmeny",
+    "quickLinksLabel": "Snabblänkar",
+    "callPrefix": "Ring",
+    "homeLinkLabel": "CW Enterprise AB – startsida",
+    "breadcrumbsLabel": "Brödsmulor",
+    "breadcrumbHome": "Start",
+    "carouselPrevious": "Föregående",
+    "carouselNext": "Nästa",
+    "carouselGoTo": "Gå till position {n} av {total}",
+    "uppdragFilterLabel": "Filtrera uppdrag",
+    "stepPrefix": "Steg",
+    "mapTitlePrefix": "Karta:",
+    "closeLabel": "Stäng",
+    "ratingLabel": "{n} av 5 stjärnor",
+    "cookieText": "Vi vill använda kakor för att se hur besökare använder sidan, så att vi kan göra den bättre. Godkänner du det?",
+    "cookieAccept": "Godkänn",
+    "cookieDecline": "Nej tack",
+    "cookieSettings": "Kakinställningar"
+  },
+  "servicePage": {
+    "badge": "",
+    "eyebrow": "Företagets tjänster",
+    "includesHeading": "Det här ingår",
+    "galleryEyebrow": "Från projekten",
+    "reviewsEyebrow": "Omdömen",
+    "reviewsHeading": "Vad kunderna säger",
+    "moreEyebrow": "Fler tjänster",
+    "cta": {
+      "heading": "Vill du veta mer?",
+      "text": "Berätta om ditt projekt, så återkommer vi.",
+      "button": {
+        "label": "Kontakta oss",
+        "href": "#offert"
+      }
+    },
+    "factsTitle": "Fakta",
+    "factLabels": {
+      "service": "Tjänst",
+      "performedBy": "Utförs av",
+      "seat": "Säte",
+      "area": "Område",
+      "org": "Org.nr"
+    },
+    "contactTagline": "Leder, utvecklar och förvaltar dina projekt",
+    "contactButton": {
+      "label": "Kontakta oss",
+      "href": "#offert"
+    },
+    "backLink": {
+      "label": "Tillbaka till tjänsterna",
+      "href": "/#tjanster"
+    },
+    "moreHeading": "Företagets övriga tjänster",
+    "breadcrumbLabel": "Tjänster",
+    "breadcrumbHref": "/#tjanster"
+  },
+  "notFound": {
+    "eyebrow": "404",
+    "heading": "Sidan finns inte",
+    "text": "Länken kan vara gammal eller felstavad.",
+    "button": {
+      "label": "Till startsidan",
+      "href": "/"
+    },
+    "seoTitle": "Sidan finns inte"
+  },
+  "services": {
+    "order": [
+      "management-consulting",
+      "forvaltning",
+      "byggtjanster"
+    ],
+    "items": {
+      "management-consulting": {
+        "slug": "management-consulting",
+        "name": "Management Consulting",
+        "shortDescription": "Projektledning, affärsutveckling och affärsprocessanalys, IS/IT.",
+        "lead": "Projektledning, affärsutveckling och affärsprocessanalys, IS/IT.",
+        "description": [
+          "Vi leder projekt där verksamhet och affärssystem förändras, från Proof of Concept och analys till utveckling och idrifttagande.",
+          "De senaste uppdragen har gällt alla europeiska affärsenheter inom Logisnext Mitsubishi Forklift Trucks Europe: en Proof of Concept för nytt ERP-system, utveckling och idrifttagande av ett CRM/CPQ-system och analysfasen inför implementation av Microsoft Business Central."
+        ],
+        "includes": [
+          "Projektledning",
+          "Affärsutveckling",
+          "Affärsprocessanalys",
+          "IS/IT: ERP, CRM och CPQ",
+          "Proof of Concept och analysfas",
+          "Utveckling och idrifttagande"
+        ],
+        "galleryHeading": "",
+        "galleryLink": {
+          "label": "",
+          "href": "/"
+        },
+        "gallery": {
+          "order": [],
+          "items": {}
+        },
+        "icon": "Route",
+        "image": {
+          "src": "/photos/fjall-stig.webp",
+          "variants": [
+            {
+              "width": 480,
+              "src": "/photos/fjall-stig-480.webp"
+            },
+            {
+              "width": 800,
+              "src": "/photos/fjall-stig-800.webp"
+            },
+            {
+              "width": 877,
+              "src": "/photos/fjall-stig.webp"
+            }
+          ],
+          "alt": "Vandrare på en stig över fjället",
+          "focus": "50% 55%"
+        },
+        "seo": {
+          "title": "Management Consulting – projektledning och IS/IT",
+          "description": "Projektledning, affärsutveckling och affärsprocessanalys, IS/IT. Erfarenhet av ERP- och CRM/CPQ-projekt för alla europeiska affärsenheter."
+        }
+      },
+      "forvaltning": {
+        "slug": "forvaltning",
+        "name": "Förvaltning",
+        "shortDescription": "Finansiell och teknisk förvaltning av bostadsfastigheter och kommersiella fastigheter.",
+        "lead": "Finansiell och teknisk förvaltning av bostadsfastigheter och kommersiella fastigheter, under namnet CWE Fastighetsförvaltning.",
+        "description": [
+          "Den finansiella förvaltningen handlar om fastighetens ekonomi: hyror och avgifter, budget, uppföljning och rapportering till ägaren.",
+          "Den tekniska förvaltningen handlar om fastighetens skick: drift, tillsyn och planering av underhåll, så att byggnaden fungerar och behåller sitt värde. När något behöver byggas om finns byggtjänster inom samma företag, genom Västkust Bygg & Montage AB."
+        ],
+        "includes": [
+          "Finansiell förvaltning",
+          "Teknisk förvaltning",
+          "Bostadsfastigheter",
+          "Kommersiella fastigheter"
+        ],
+        "galleryHeading": "",
+        "galleryLink": {
+          "label": "",
+          "href": "/"
+        },
+        "gallery": {
+          "order": [],
+          "items": {}
+        },
+        "icon": "Building2",
+        "image": {
+          "src": "/photos/fjall-vidd.webp",
+          "variants": [
+            {
+              "width": 480,
+              "src": "/photos/fjall-vidd-480.webp"
+            },
+            {
+              "width": 800,
+              "src": "/photos/fjall-vidd-800.webp"
+            },
+            {
+              "width": 877,
+              "src": "/photos/fjall-vidd.webp"
+            }
+          ],
+          "alt": "Fjällvidd med blånande berg i fjärran",
+          "focus": "50% 50%"
+        },
+        "seo": {
+          "title": "Förvaltning – CWE Fastighetsförvaltning",
+          "description": "Finansiell och teknisk förvaltning av bostadsfastigheter och kommersiella fastigheter."
+        }
+      },
+      "byggtjanster": {
+        "slug": "byggtjanster",
+        "name": "Byggtjänster",
+        "shortDescription": "Via helägda Västkust Bygg & Montage AB tillhandahåller vi byggtjänster, från idé till färdigt projekt.",
+        "lead": "Via helägda Västkust Bygg & Montage AB tillhandahåller vi byggtjänster. Vi är med er hela vägen, från idé till färdigt projekt.",
+        "description": [
+          "Vi erbjuder en helhetslösning där kompetens, noggrannhet och tydlighet är viktiga faktorer för oss. Vår erfarenhet och expertis inom byggbranschen gör oss till det optimala valet för ditt projekt.",
+          "Västkust Bygg & Montage AB nås på 076-882 03 33 och info@vastkustbygg.se, måndag–fredag 08.00–17.00."
+        ],
+        "includes": [
+          "Nybyggnation",
+          "Renovering och ombyggnad",
+          "Badrumsrenovering enligt BBV",
+          "Köksrenovering",
+          "Kontor och lokalanpassning"
+        ],
+        "galleryHeading": "Bilder från Västkust Bygg & Montages projekt",
+        "galleryLink": {
+          "label": "Till vastkustbygg.se",
+          "href": "https://vastkustbygg.se/"
+        },
+        "gallery": {
+          "order": [
+            "g1",
+            "g2",
+            "g3",
+            "g4",
+            "g5",
+            "g6"
+          ],
+          "items": {
+            "g1": {
+              "image": {
+                "src": "/photos/badrum-a.webp",
+                "variants": [
+                  {
+                    "width": 480,
+                    "src": "/photos/badrum-a-480.webp"
+                  },
+                  {
+                    "width": 800,
+                    "src": "/photos/badrum-a-800.webp"
+                  },
+                  {
+                    "width": 1013,
+                    "src": "/photos/badrum-a.webp"
+                  }
+                ],
+                "alt": "Renoverat badrum med nya plattor"
+              },
+              "caption": "Badrum"
+            },
+            "g2": {
+              "image": {
+                "src": "/photos/kok-a.webp",
+                "variants": [
+                  {
+                    "width": 480,
+                    "src": "/photos/kok-a-480.webp"
+                  },
+                  {
+                    "width": 800,
+                    "src": "/photos/kok-a-800.webp"
+                  },
+                  {
+                    "width": 1200,
+                    "src": "/photos/kok-a-1200.webp"
+                  },
+                  {
+                    "width": 1800,
+                    "src": "/photos/kok-a.webp"
+                  }
+                ],
+                "alt": "Nytt kök med ljusa trästommar och massiv bänkskiva"
+              },
+              "caption": "Kök"
+            },
+            "g3": {
+              "image": {
+                "src": "/photos/kontor-glas.webp",
+                "variants": [
+                  {
+                    "width": 480,
+                    "src": "/photos/kontor-glas-480.webp"
+                  },
+                  {
+                    "width": 800,
+                    "src": "/photos/kontor-glas-800.webp"
+                  },
+                  {
+                    "width": 1013,
+                    "src": "/photos/kontor-glas.webp"
+                  }
+                ],
+                "alt": "Glasvägg mot mötesrum i en ombyggd kontorslokal"
+              },
+              "caption": "Kontor"
+            },
+            "g4": {
+              "image": {
+                "src": "/photos/badrum-b.webp",
+                "variants": [
+                  {
+                    "width": 480,
+                    "src": "/photos/badrum-b-480.webp"
+                  },
+                  {
+                    "width": 800,
+                    "src": "/photos/badrum-b-800.webp"
+                  },
+                  {
+                    "width": 1013,
+                    "src": "/photos/badrum-b.webp"
+                  }
+                ],
+                "alt": "Badrum med dusch och nya plattor"
+              },
+              "caption": "Badrum"
+            },
+            "g5": {
+              "image": {
+                "src": "/photos/kok-b.webp",
+                "variants": [
+                  {
+                    "width": 480,
+                    "src": "/photos/kok-b-480.webp"
+                  },
+                  {
+                    "width": 800,
+                    "src": "/photos/kok-b-800.webp"
+                  },
+                  {
+                    "width": 1200,
+                    "src": "/photos/kok-b-1200.webp"
+                  },
+                  {
+                    "width": 1800,
+                    "src": "/photos/kok-b.webp"
+                  }
+                ],
+                "alt": "Det nya köket med fönster och spotlightskena"
+              },
+              "caption": "Kök"
+            },
+            "g6": {
+              "image": {
+                "src": "/photos/kontor-b.webp",
+                "variants": [
+                  {
+                    "width": 480,
+                    "src": "/photos/kontor-b-480.webp"
+                  },
+                  {
+                    "width": 800,
+                    "src": "/photos/kontor-b-800.webp"
+                  },
+                  {
+                    "width": 1013,
+                    "src": "/photos/kontor-b.webp"
+                  }
+                ],
+                "alt": "Ombyggd kontorslokal"
+              },
+              "caption": "Kontor"
+            }
+          }
+        },
+        "icon": "Hammer",
+        "image": {
+          "src": "/photos/kok-a.webp",
+          "variants": [
+            {
+              "width": 480,
+              "src": "/photos/kok-a-480.webp"
+            },
+            {
+              "width": 800,
+              "src": "/photos/kok-a-800.webp"
+            },
+            {
+              "width": 1200,
+              "src": "/photos/kok-a-1200.webp"
+            },
+            {
+              "width": 1800,
+              "src": "/photos/kok-a.webp"
+            }
+          ],
+          "alt": "Nytt kök byggt av Västkust Bygg & Montage",
+          "focus": "50% 60%"
+        },
+        "seo": {
+          "title": "Byggtjänster via Västkust Bygg & Montage AB",
+          "description": "Byggtjänster via helägda Västkust Bygg & Montage AB: nybyggnation, renovering, badrum, kök och kontor. Från idé till färdigt projekt."
+        }
+      }
+    }
+  },
+  "uppdrag": {
+    "order": [],
+    "items": {}
+  },
+  "certificates": {
+    "order": [
+      "vatrum",
+      "id06",
+      "bas",
+      "forsakring",
+      "fora"
+    ],
+    "items": {
+      "vatrum": {
+        "name": "Våtrumsbehörighet",
+        "issuer": "Byggkeramikrådet",
+        "validUntil": "",
+        "description": "Västkust Bygg & Montage är utbildade hos Byggkeramikrådet och arbetar efter branschreglerna för våtrum, BBV. Efter varje våtrumsprojekt lämnas ett kvalitetsdokument.",
+        "image": {
+          "src": "/photos/badge-vatrum.png",
+          "variants": [],
+          "alt": "Behörig våtrum – Byggkeramikrådet"
+        }
+      },
+      "id06": {
+        "name": "ID06",
+        "issuer": "",
+        "validUntil": "",
+        "description": "Närvaroregistrering på arbetsplatsen, digitala utbildningsbevis och behörighetskontroll.",
+        "image": {
+          "src": "/photos/badge-id06.png",
+          "variants": [],
+          "alt": "ID06"
+        }
+      },
+      "bas": {
+        "name": "BAS P och BAS U",
+        "issuer": "",
+        "validUntil": "",
+        "description": "Utbildade byggarbetsmiljösamordnare för planering och projektering (BAS P) och för utförande (BAS U).",
+        "image": null
+      },
+      "forsakring": {
+        "name": "Allrisk- och ansvarsförsäkring",
+        "issuer": "Länsförsäkringar",
+        "validUntil": "",
+        "description": "Allrisk- och ansvarsförsäkring genom Länsförsäkringar.",
+        "image": {
+          "src": "/photos/badge-lf.png",
+          "variants": [],
+          "alt": "Länsförsäkringar"
+        }
+      },
+      "fora": {
+        "name": "Kollektivavtalade försäkringar",
+        "issuer": "Fora",
+        "validUntil": "",
+        "description": "De anställda omfattas av kollektivavtalade försäkringar genom Fora.",
+        "image": {
+          "src": "/photos/badge-fora.png",
+          "variants": [],
+          "alt": "FORA"
+        }
+      }
+    }
+  },
+  "pages": {
+    "order": [
+      "hem",
+      "certifikat",
+      "kontakt"
+    ],
+    "items": {
+      "hem": {
+        "slug": "",
+        "title": "Hem",
+        "seo": {
+          "title": "CW Enterprise AB – Leder, utvecklar och förvaltar dina projekt",
+          "description": "CW Enterprise AB i Kullavik: management consulting, finansiell och teknisk fastighetsförvaltning samt byggtjänster via helägda Västkust Bygg & Montage AB."
+        },
+        "sections": {
+          "order": [
+            "hero",
+            "tjanster",
+            "modell",
+            "uppdrag",
+            "bygg",
+            "kontakt"
+          ],
+          "items": {
+            "hero": {
+              "type": "hero",
+              "hidden": false,
+              "anchor": "",
+              "label": "",
+              "eyebrow": "",
+              "heading": "Leder, utvecklar och förvaltar dina projekt!",
+              "text": "Management consulting, förvaltning av fastigheter och byggtjänster genom vårt helägda dotterbolag Västkust Bygg & Montage AB.",
+              "image": {
+                "src": "/photos/fjall.webp",
+                "variants": [
+                  {
+                    "width": 480,
+                    "src": "/photos/fjall-480.webp"
+                  },
+                  {
+                    "width": 800,
+                    "src": "/photos/fjall-800.webp"
+                  },
+                  {
+                    "width": 1200,
+                    "src": "/photos/fjall-1200.webp"
+                  },
+                  {
+                    "width": 2400,
+                    "src": "/photos/fjall.webp"
+                  }
+                ],
+                "alt": "En vandrare med ryggsäck på en stig över kalfjället",
+                "focus": "50% 62%"
+              },
+              "button": {
+                "label": "Företagets tjänster",
+                "href": "/#tjanster"
+              }
+            },
+            "tjanster": {
+              "type": "services",
+              "hidden": false,
+              "anchor": "tjanster",
+              "label": "",
+              "eyebrow": "Företagets tjänster",
+              "heading": "Tre verksamheter, samma ägare",
+              "link": {
+                "label": "",
+                "href": "/"
+              },
+              "cardLinkPrefix": "",
+              "moreHeading": "",
+              "moreItems": {
+                "order": [],
+                "items": {}
+              },
+              "ctaHeading": "",
+              "ctaText": "",
+              "ctaButton": {
+                "label": "Kontakta oss",
+                "href": "#offert"
+              }
+            },
+            "modell": {
+              "type": "model",
+              "hidden": false,
+              "anchor": "",
+              "label": "",
+              "eyebrow": "Samma ägare",
+              "heading": "Projekt, fastighet och bygge på en grund",
+              "text": "Management Consulting leder och utvecklar, CWE Fastighetsförvaltning förvaltar och Västkust Bygg & Montage bygger. Du kan anlita oss för en del eller för helheten. Peka på en verksamhet för att se den i modellen.",
+              "model": "koncern",
+              "caption": "Dra i modellen för att vrida den.",
+              "parts": {
+                "order": [
+                  "i1",
+                  "i2",
+                  "i3"
+                ],
+                "items": {
+                  "i1": {
+                    "label": "Konsult",
+                    "color": "#34506E"
+                  },
+                  "i2": {
+                    "label": "Förvaltning",
+                    "color": "#E2601A"
+                  },
+                  "i3": {
+                    "label": "Bygg",
+                    "color": "#1F86EC"
+                  }
+                }
+              }
+            },
+            "uppdrag": {
+              "type": "timeline",
+              "hidden": false,
+              "anchor": "uppdrag",
+              "label": "",
+              "eyebrow": "Management Consulting",
+              "heading": "Slutförda uppdrag",
+              "text": "Tre uppdrag i följd som projektledare för alla europeiska affärsenheter inom Logisnext Mitsubishi Forklift Trucks Europe.",
+              "items": {
+                "order": [
+                  "i1",
+                  "i2",
+                  "i3"
+                ],
+                "items": {
+                  "i1": {
+                    "title": "Proof of Concept för nytt ERP-system",
+                    "start": "2023-11",
+                    "end": "2024-04",
+                    "text": "Projektledare för Proof of Concept för nytt ERP-system för alla europeiska affärsenheter inom Logisnext Mitsubishi Forklift Trucks Europe."
+                  },
+                  "i2": {
+                    "title": "Utveckling och idrifttagande av CRM/CPQ-system",
+                    "start": "2024-06",
+                    "end": "2025-05",
+                    "text": "Projektledare för utveckling och idrifttagande av ett CRM/CPQ-system för alla europeiska affärsenheter inom Logisnext Mitsubishi Forklift Trucks Europe."
+                  },
+                  "i3": {
+                    "title": "Analysfas inför nytt ERP-system (Microsoft Business Central)",
+                    "start": "2025-06",
+                    "end": "2026-04",
+                    "text": "Projektledare för analysfasen inför implementation av ett nytt ERP-system (Microsoft Business Central) för alla europeiska affärsenheter inom Logisnext Mitsubishi Forklift Trucks Europe."
+                  }
+                }
+              }
+            },
+            "bygg": {
+              "type": "text",
+              "hidden": false,
+              "anchor": "",
+              "label": "",
+              "eyebrow": "Byggtjänster",
+              "heading": "Med er hela vägen, från idé till färdigt projekt",
+              "paragraphs": [
+                "Via helägda Västkust Bygg & Montage AB tillhandahåller vi byggtjänster. Vi erbjuder en helhetslösning där kompetens, noggrannhet och tydlighet är viktiga faktorer för oss.",
+                "Vår erfarenhet och expertis inom byggbranschen gör oss till det optimala valet för ditt projekt."
+              ],
+              "image": {
+                "src": "/photos/logo-vastkust.png",
+                "variants": [],
+                "alt": "Västkust Bygg & Montage AB"
+              },
+              "imageSide": "left",
+              "button": {
+                "label": "Till Västkust Bygg & Montages hemsida",
+                "href": "https://vastkustbygg.se/"
+              },
+              "tone": "card"
+            },
+            "kontakt": {
+              "type": "contact",
+              "hidden": false,
+              "anchor": "kontakt",
+              "label": "",
+              "eyebrow": "Kontakt",
+              "heading": "Hör av dig",
+              "text": "Berätta kort om ditt projekt, så återkommer vi. Vill du hellre ringa går det lika bra.",
+              "phoneLabel": "Telefon",
+              "emailLabel": "E-post",
+              "addressLabel": "Adress",
+              "openingHoursLabel": "Öppettider",
+              "orgLabel": "Org.nr",
+              "formHeading": "Skicka en förfrågan"
+            }
+          }
+        }
+      },
+      "certifikat": {
+        "slug": "certifikat",
+        "title": "Certifikat",
+        "seo": {
+          "title": "Certifikat och försäkringar – byggtjänster",
+          "description": "Västkust Bygg & Montage AB: våtrumsbehörighet enligt BBV, ID06, BAS P/U, allrisk- och ansvarsförsäkring via Länsförsäkringar och kollektivavtalade försäkringar via Fora."
+        },
+        "sections": {
+          "order": [
+            "bild",
+            "s2",
+            "s3"
+          ],
+          "items": {
+            "bild": {
+              "type": "pageHero",
+              "hidden": false,
+              "anchor": "",
+              "label": "",
+              "eyebrow": "Byggtjänster",
+              "heading": "Certifikat och försäkringar",
+              "text": "Det som skyddar dig som kund i byggprojekten, och som visar att arbetet görs enligt branschens regler.",
+              "button": {
+                "label": "",
+                "href": "/"
+              },
+              "image": {
+                "src": "/photos/badrum-a.webp",
+                "variants": [
+                  {
+                    "width": 480,
+                    "src": "/photos/badrum-a-480.webp"
+                  },
+                  {
+                    "width": 800,
+                    "src": "/photos/badrum-a-800.webp"
+                  },
+                  {
+                    "width": 1013,
+                    "src": "/photos/badrum-a.webp"
+                  }
+                ],
+                "alt": "Renoverat badrum med nya plattor",
+                "focus": "50% 55%"
+              },
+              "size": "medium"
+            },
+            "s2": {
+              "type": "certificates",
+              "hidden": false,
+              "anchor": "",
+              "label": "",
+              "eyebrow": "Västkust Bygg & Montage AB",
+              "heading": "Behörigheter och försäkringar",
+              "text": "",
+              "issuerPrefix": "",
+              "validUntilPrefix": "Giltigt till",
+              "emptyHeading": "Certifikat",
+              "emptyText": "Fråga oss gärna om behörigheterna på"
+            },
+            "s3": {
+              "type": "cta",
+              "hidden": false,
+              "anchor": "",
+              "label": "",
+              "eyebrow": "",
+              "heading": "Har du ett byggprojekt på gång?",
+              "text": "Berätta vad du vill göra, så återkommer vi.",
+              "button": {
+                "label": "Kontakta oss",
+                "href": "#offert"
+              }
+            }
+          }
+        }
+      },
+      "kontakt": {
+        "slug": "kontakt",
+        "title": "Kontakt",
+        "seo": {
+          "title": "Kontakt",
+          "description": "Kontakta CW Enterprise AB, Kullaviks Kvarnfallsväg 11, 429 33 Kullavik. Telefon +46 709 188 160, e-post info@cwenterprise.se."
+        },
+        "sections": {
+          "order": [
+            "bild",
+            "s2",
+            "s3"
+          ],
+          "items": {
+            "bild": {
+              "type": "pageHero",
+              "hidden": false,
+              "anchor": "",
+              "label": "",
+              "eyebrow": "Kontakt",
+              "heading": "Hör av dig",
+              "text": "Ring, mejla eller skriv några rader om ditt projekt.",
+              "button": {
+                "label": "",
+                "href": "/"
+              },
+              "image": {
+                "src": "/photos/fjall.webp",
+                "variants": [
+                  {
+                    "width": 480,
+                    "src": "/photos/fjall-480.webp"
+                  },
+                  {
+                    "width": 800,
+                    "src": "/photos/fjall-800.webp"
+                  },
+                  {
+                    "width": 1200,
+                    "src": "/photos/fjall-1200.webp"
+                  },
+                  {
+                    "width": 2400,
+                    "src": "/photos/fjall.webp"
+                  }
+                ],
+                "alt": "En vandrare med ryggsäck på en stig över kalfjället",
+                "focus": "50% 62%"
+              },
+              "size": "medium"
+            },
+            "s2": {
+              "type": "contact",
+              "hidden": false,
+              "anchor": "kontakt",
+              "label": "",
+              "eyebrow": "Kontakt",
+              "heading": "Hör av dig",
+              "text": "Berätta kort om ditt projekt, så återkommer vi. Vill du hellre ringa går det lika bra.",
+              "phoneLabel": "Telefon",
+              "emailLabel": "E-post",
+              "addressLabel": "Adress",
+              "openingHoursLabel": "Öppettider",
+              "orgLabel": "Org.nr",
+              "formHeading": "Skicka en förfrågan"
+            },
+            "s3": {
+              "type": "map",
+              "hidden": false,
+              "anchor": "",
+              "label": "",
+              "eyebrow": "Hitta hit",
+              "heading": "Kullavik",
+              "addressPrefix": "",
+              "linkLabel": "Öppna i Google Maps",
+              "zoom": 12
+            }
+          }
+        }
+      }
+    }
+  }
+}

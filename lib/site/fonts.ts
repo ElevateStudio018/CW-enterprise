@@ -1,0 +1,154 @@
+// The Google Fonts the owner can choose between, with the weights each has of those the site uses (checked against
+// Google Fonts). The admin offers these; the build downloads the chosen ones so the site hosts its own copies.
+import type { FontChoice } from "./schema.ts";
+
+export interface FontOption {
+  family: string;
+  category: FontChoice["category"];
+  weights: number[];
+}
+
+/** The weights the site's styles use: text 400, headings 600, labels and buttons 700, the large figures 800. */
+export const USED_WEIGHTS = [400, 600, 700, 800];
+
+/** The weights to load for a family: those the site uses that the font has (the browser picks the nearest for the rest). */
+export function weightsToLoad(family: string): number[] {
+  const available = fontOption(family)?.weights ?? [400, 700];
+  const used = available.filter((weight) => USED_WEIGHTS.includes(weight));
+  return used.length > 0 ? used : [available[0]];
+}
+
+const fonts: [string, FontChoice["category"], number[]][] = [
+  ["Figtree", "sans-serif", [400, 500, 600, 700, 800]],
+  ["Inter", "sans-serif", [400, 500, 600, 700, 800]],
+  ["Roboto", "sans-serif", [400, 500, 600, 700, 800]],
+  ["Open Sans", "sans-serif", [400, 500, 600, 700, 800]],
+  ["Lato", "sans-serif", [400, 700]],
+  ["Montserrat", "sans-serif", [400, 500, 600, 700, 800]],
+  ["Poppins", "sans-serif", [400, 500, 600, 700, 800]],
+  ["Source Sans 3", "sans-serif", [400, 500, 600, 700, 800]],
+  ["Nunito Sans", "sans-serif", [400, 500, 600, 700, 800]],
+  ["Nunito", "sans-serif", [400, 500, 600, 700, 800]],
+  ["Work Sans", "sans-serif", [400, 500, 600, 700, 800]],
+  ["Raleway", "sans-serif", [400, 500, 600, 700, 800]],
+  ["Rubik", "sans-serif", [400, 500, 600, 700, 800]],
+  ["Manrope", "sans-serif", [400, 500, 600, 700, 800]],
+  ["DM Sans", "sans-serif", [400, 500, 600, 700, 800]],
+  ["Plus Jakarta Sans", "sans-serif", [400, 500, 600, 700, 800]],
+  ["Outfit", "sans-serif", [400, 500, 600, 700, 800]],
+  ["Mulish", "sans-serif", [400, 500, 600, 700, 800]],
+  ["Karla", "sans-serif", [400, 500, 600, 700, 800]],
+  ["IBM Plex Sans", "sans-serif", [400, 500, 600, 700]],
+  ["Barlow", "sans-serif", [400, 500, 600, 700, 800]],
+  ["Barlow Condensed", "sans-serif", [400, 500, 600, 700, 800]],
+  ["Archivo", "sans-serif", [400, 500, 600, 700, 800]],
+  ["Archivo Narrow", "sans-serif", [400, 500, 600, 700]],
+  ["Public Sans", "sans-serif", [400, 500, 600, 700, 800]],
+  ["Hanken Grotesk", "sans-serif", [400, 500, 600, 700, 800]],
+  ["Space Grotesk", "sans-serif", [400, 500, 600, 700]],
+  ["Sora", "sans-serif", [400, 500, 600, 700, 800]],
+  ["Lexend", "sans-serif", [400, 500, 600, 700, 800]],
+  ["Red Hat Display", "sans-serif", [400, 500, 600, 700, 800]],
+  ["Albert Sans", "sans-serif", [400, 500, 600, 700, 800]],
+  ["Schibsted Grotesk", "sans-serif", [400, 500, 600, 700, 800]],
+  ["Onest", "sans-serif", [400, 500, 600, 700, 800]],
+  ["Instrument Sans", "sans-serif", [400, 500, 600, 700]],
+  ["Be Vietnam Pro", "sans-serif", [400, 500, 600, 700, 800]],
+  ["Heebo", "sans-serif", [400, 500, 600, 700, 800]],
+  ["Oswald", "sans-serif", [400, 500, 600, 700]],
+  ["Fira Sans", "sans-serif", [400, 500, 600, 700, 800]],
+  ["PT Sans", "sans-serif", [400, 700]],
+  ["Noto Sans", "sans-serif", [400, 500, 600, 700, 800]],
+  ["Josefin Sans", "sans-serif", [400, 500, 600, 700]],
+  ["Kanit", "sans-serif", [400, 500, 600, 700, 800]],
+  ["Titillium Web", "sans-serif", [400, 600, 700]],
+  ["Exo 2", "sans-serif", [400, 500, 600, 700, 800]],
+  ["Cabin", "sans-serif", [400, 500, 600, 700]],
+  ["Quicksand", "sans-serif", [400, 500, 600, 700]],
+  ["Urbanist", "sans-serif", [400, 500, 600, 700, 800]],
+  ["Jost", "sans-serif", [400, 500, 600, 700, 800]],
+  ["Bricolage Grotesque", "sans-serif", [400, 500, 600, 700, 800]],
+  ["Libre Franklin", "sans-serif", [400, 500, 600, 700, 800]],
+  ["Chivo", "sans-serif", [400, 500, 600, 700, 800]],
+  ["Overpass", "sans-serif", [400, 500, 600, 700, 800]],
+  ["Asap", "sans-serif", [400, 500, 600, 700, 800]],
+  ["Signika", "sans-serif", [400, 500, 600, 700]],
+  ["Saira", "sans-serif", [400, 500, 600, 700, 800]],
+  ["Encode Sans", "sans-serif", [400, 500, 600, 700, 800]],
+  ["Golos Text", "sans-serif", [400, 500, 600, 700, 800]],
+  ["Geologica", "sans-serif", [400, 500, 600, 700, 800]],
+  ["Commissioner", "sans-serif", [400, 500, 600, 700, 800]],
+  ["Epilogue", "sans-serif", [400, 500, 600, 700, 800]],
+  ["Merriweather", "serif", [400, 500, 600, 700, 800]],
+  ["Playfair Display", "serif", [400, 500, 600, 700, 800]],
+  ["Lora", "serif", [400, 500, 600, 700]],
+  ["PT Serif", "serif", [400, 700]],
+  ["Libre Baskerville", "serif", [400, 500, 600, 700]],
+  ["EB Garamond", "serif", [400, 500, 600, 700, 800]],
+  ["Cormorant Garamond", "serif", [400, 500, 600, 700]],
+  ["Crimson Pro", "serif", [400, 500, 600, 700, 800]],
+  ["Source Serif 4", "serif", [400, 500, 600, 700, 800]],
+  ["Noto Serif", "serif", [400, 500, 600, 700, 800]],
+  ["Fraunces", "serif", [400, 500, 600, 700, 800]],
+  ["DM Serif Display", "serif", [400]],
+  ["Spectral", "serif", [400, 500, 600, 700, 800]],
+  ["Bitter", "serif", [400, 500, 600, 700, 800]],
+  ["Roboto Slab", "serif", [400, 500, 600, 700, 800]],
+  ["Zilla Slab", "serif", [400, 500, 600, 700]],
+  ["Arvo", "serif", [400, 700]],
+  ["Domine", "serif", [400, 500, 600, 700]],
+  ["Young Serif", "serif", [400]],
+  ["Instrument Serif", "serif", [400]],
+  ["Newsreader", "serif", [400, 500, 600, 700, 800]],
+  ["Literata", "serif", [400, 500, 600, 700, 800]],
+  ["Gelasio", "serif", [400, 500, 600, 700]],
+  ["Libre Caslon Text", "serif", [400, 700]],
+  ["Brygada 1918", "serif", [400, 500, 600, 700]],
+  ["Petrona", "serif", [400, 500, 600, 700, 800]],
+  ["Bebas Neue", "display", [400]],
+  ["Anton", "display", [400]],
+  ["Archivo Black", "display", [400]],
+  ["Abril Fatface", "display", [400]],
+  ["Alfa Slab One", "display", [400]],
+  ["Righteous", "display", [400]],
+  ["Teko", "display", [400, 500, 600, 700]],
+  ["Big Shoulders Display", "display", [400, 500, 600, 700, 800]],
+  ["Unbounded", "display", [400, 500, 600, 700, 800]],
+  ["Syne", "display", [400, 500, 600, 700, 800]],
+  ["Dela Gothic One", "display", [400]],
+  ["Bowlby One", "display", [400]],
+  ["Caveat", "handwriting", [400, 500, 600, 700]],
+  ["Dancing Script", "handwriting", [400, 500, 600, 700]],
+  ["Kalam", "handwriting", [400, 700]],
+  ["Patrick Hand", "handwriting", [400]],
+  ["Shadows Into Light", "handwriting", [400]],
+  ["JetBrains Mono", "monospace", [400, 500, 600, 700, 800]],
+  ["IBM Plex Mono", "monospace", [400, 500, 600, 700]],
+  ["Space Mono", "monospace", [400, 700]],
+  ["Roboto Mono", "monospace", [400, 500, 600, 700]],
+  ["Fira Code", "monospace", [400, 500, 600, 700]],
+];
+
+export const fontOptions: FontOption[] = fonts.map(([family, category, weights]) => ({ family, category, weights }));
+
+export function fontOption(family: string): FontOption | undefined {
+  return fontOptions.find((option) => option.family === family);
+}
+
+export const fontCategoryLabels: Record<FontChoice["category"], string> = {
+  "sans-serif": "Rena (sans-serif)",
+  serif: "Klassiska (serif)",
+  display: "Rubrikstilar",
+  handwriting: "Handskrivna",
+  monospace: "Skrivmaskin",
+};
+
+/** A Google Fonts stylesheet address for some families; `text` limits the download to those characters. */
+export function googleFontsHref(families: string[], text?: string): string {
+  const query = families
+    .map((family) => {
+      return `family=${encodeURIComponent(family).replace(/%20/g, "+")}:wght@${weightsToLoad(family).join(";")}`;
+    })
+    .join("&");
+  return `https://fonts.googleapis.com/css2?${query}&display=swap${text ? `&text=${encodeURIComponent(text)}` : ""}`;
+}

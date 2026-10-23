@@ -1,0 +1,43 @@
+name: Deploy site to GitHub Pages
+
+# Builds the public site from the published content in Supabase and puts it on the gh-pages branch, which GitHub
+# Pages serves. Runs on pushes and when the admin panel's Publish button dispatches it (GITHUB_DISPATCH_TOKEN).
+on:
+  push:
+    branches: [main, claude/ny-webbplats]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+      - run: npm ci
+      - run: npm run build
+        env:
+          GITHUB_PAGES: "true"
+          # The site's Supabase project (public values, row level security protects the data). Repository variables
+          # (Settings → Secrets and variables → Actions → Variables) override the project ref chnvmoxbsrefeahqgfht.
+          NEXT_PUBLIC_SUPABASE_URL: ${{ vars.NEXT_PUBLIC_SUPABASE_URL || 'https://chnvmoxbsrefeahqgfht.supabase.co' }}
+          NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{ vars.NEXT_PUBLIC_SUPABASE_ANON_KEY || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImNobnZtb3hic3JlZmVhaHFnZmh0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTIzOTYyMjcsImV4cCI6MjEwNzk3MjIyN30.XmL2DAxQbHZWdJzX9109P36_3qrjGwgC0jPzCxRa-AM' }}
+      - run: touch out/.nojekyll
+      - name: Publish to gh-pages
+        run: |
+          cd out
+          git init -q -b gh-pages
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git commit -qm "Publicera ${GITHUB_SHA::7}"
+          git push -qf "https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${GITHUB_REPOSITORY}.git" gh-pages

@@ -1,0 +1,179 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    color: rgb(var(--c-text));
+    background-color: rgb(var(--c-background));
+    line-height: 1.15;
+  }
+
+  /* The theme's heading font; body text and buttons take theirs from font-sans and .text-label. */
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    font-family: var(--font-heading);
+  }
+
+  * {
+    overflow-wrap: break-word;
+  }
+}
+
+@layer utilities {
+  /* Buttons and the uppercase links set in the label style use the theme's button font. */
+  .text-label {
+    font-family: var(--font-button);
+  }
+
+  .no-scrollbar {
+    scrollbar-width: none;
+  }
+
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+/* DrawIcon: hidden until it scrolls into view, then each stroke draws itself (every stroke has pathLength 1). */
+.icon-draw svg {
+  opacity: 0;
+}
+
+.icon-draw svg * {
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+}
+
+.icon-draw.is-drawn svg {
+  opacity: 1;
+  /* Shown only as drawing starts: until then each stroke's round end would sit there as a dot. */
+  transition: opacity 0s linear var(--draw-delay, 0ms);
+}
+
+.icon-draw.is-drawn svg * {
+  stroke-dashoffset: 0;
+  transition: stroke-dashoffset 0.35s cubic-bezier(0.33, 1, 0.68, 1) var(--draw-delay, 0ms);
+}
+
+/* Scroll-linked motion, left out with reduced motion and where the browser can't tie animations to scrolling. */
+@media (prefers-reduced-motion: no-preference) {
+  @supports (animation-timeline: view()) {
+    /* A photo at the top of a page sinks as the first screenful scrolls by, so it moves slower than the text. */
+    .parallax-top {
+      animation: parallax-top linear both;
+      animation-timeline: scroll(root);
+      animation-range: 0px 100vh;
+    }
+
+    /* A photo further down drifts through its frame while the frame passes. The frame must clip with
+       overflow: clip, as overflow: hidden would make the frame itself the scroll container view() follows. */
+    .parallax-band {
+      scale: 1.1;
+      animation: parallax-band linear both;
+      animation-timeline: view();
+    }
+
+    .header-shadow {
+      animation: header-shadow linear both;
+      animation-timeline: scroll(root);
+      animation-range: 0px 48px;
+    }
+  }
+}
+
+@keyframes parallax-top {
+  to {
+    translate: 0 30vh;
+  }
+}
+
+@keyframes parallax-band {
+  from {
+    translate: 0 -4.5%;
+  }
+  to {
+    translate: 0 4.5%;
+  }
+}
+
+@keyframes header-shadow {
+  from {
+    box-shadow: 0 6px 24px -8px rgb(0 0 0 / 0);
+  }
+  to {
+    box-shadow: 0 6px 24px -8px rgb(0 0 0 / 0.45);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-delay: 0ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    transition-delay: 0ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* Admin panel: soft entrances for pages, windows and messages, and a sheen over buttons while they work. */
+@keyframes admin-fade {
+  from {
+    opacity: 0;
+  }
+}
+
+@keyframes admin-rise {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+}
+
+@keyframes admin-sheen {
+  from {
+    background-position: 200% 0;
+  }
+  to {
+    background-position: -200% 0;
+  }
+}
+
+/* "backwards", not "both": once an animation ends nothing of it stays, so a finished rise leaves no transform behind
+   (a transform would turn the element into the frame that position: fixed is measured against). */
+.admin-fade {
+  animation: admin-fade 0.2s ease-out backwards;
+}
+
+.admin-rise {
+  animation: admin-rise 0.28s cubic-bezier(0.22, 1, 0.36, 1) backwards;
+}
+
+.admin-toast {
+  animation: admin-rise 0.25s cubic-bezier(0.22, 1, 0.36, 1) backwards;
+}
+
+.admin-busy {
+  background-image: linear-gradient(110deg, transparent 30%, rgb(255 255 255 / 0.28) 50%, transparent 70%);
+  background-size: 200% 100%;
+  animation: admin-sheen 1.4s linear infinite;
+}
+
+/* CW Enterprise's wordmark: the name in the heading font (components/Wordmark.tsx). */
+.wordmark-text { display: inline-block; font-family: var(--font-heading, "Josefin Sans"), "Josefin Sans", "Helvetica Neue", Arial, sans-serif; font-size: 1.6rem; font-weight: 400; line-height: 1; letter-spacing: 0.01em; white-space: nowrap; padding-top: 0.18em; color: inherit; }
+.wordmark-text--light { color: #ffffff; }

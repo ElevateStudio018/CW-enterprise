@@ -1,0 +1,21 @@
+import type { Collection } from "./schema.ts";
+
+/** A collection's items in display order, each with its id. */
+export function list<T>(collection: Collection<T>): (T & { id: string })[] {
+  return collection.order.map((id) => ({ ...collection.items[id], id }));
+}
+
+/** An id for a new item that is not yet used in the collection, made from its name where possible. */
+export function newId(collection: Collection<unknown>, name = "ny"): string {
+  const base =
+    name
+      .toLowerCase()
+      .normalize("NFD")
+      .replace(/[̀-ͯ]/g, "")
+      .replace(/[^a-z0-9]+/g, "-")
+      .replace(/^-+|-+$/g, "")
+      .slice(0, 40) || "ny";
+  let id = /^[a-z0-9]/.test(base) ? base : `x-${base}`;
+  for (let n = 2; Object.prototype.hasOwnProperty.call(collection.items, id); n++) id = `${base}-${n}`;
+  return id;
+}
