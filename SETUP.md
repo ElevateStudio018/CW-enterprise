@@ -1,12 +1,16 @@
 # Koppla in adminpanelen
 
 Det mesta är gjort: Supabase-projektet `cw-enterprise` finns, databasen och Edge Functions är inlagda,
-inloggningsinställningarna är satta och hemsidan byggs mot projektet. Under testperioden går alla mejl till
-elevate.studio018@gmail.com, som också är den enda adressen som kan bli admin.
+inloggningsinställningarna är satta och hemsidan byggs mot projektet. Mejl om förfrågningar går till
+elevate.studio018@gmail.com tills `QUOTE_NOTIFY_EMAIL` sätts. Admin kan elevate.studio018@gmail.com och
+info@cwenterprise.se vara; kontot för info@cwenterprise.se finns redan.
 
 ## Det här gör du
 
-### 1. Skapa din inloggning (2 minuter)
+### 1. Inloggning
+
+Kontot info@cwenterprise.se är skapat. Byt lösenordet under Inställningar i adminpanelen efter första inloggningen.
+Vill du också ha ett konto för elevate.studio018@gmail.com gör du så här:
 
 Supabase → projektet **cw-enterprise** → Authentication → Users → **Add user** → **Create new user**:
 
@@ -30,7 +34,6 @@ Västkust-projektet fungerar, men GitHub-nyckeln måste ha tillgång till repot 
 
 ### Vid lansering
 
-- CW Enterprise (info@cwenterprise.se) läggs till som admin.
 - Secret `QUOTE_NOTIFY_EMAIL` = `info@cwenterprise.se`, så att förfrågningarna går dit.
 - Egen domän: `EMAIL_FROM`, `SITE_URL`, `ADMIN_URL` och `ALLOWED_ORIGINS` (se `supabase/functions/.env.example`).
 

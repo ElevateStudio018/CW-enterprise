@@ -13,7 +13,7 @@ select private.set_theme_tables(data -> 'theme') from public.site_snapshot where
 insert into public.website_colors (scope, key, value) values ('admin', 'primary', '#34506E')
 on conflict (scope, key) do nothing;
 
-insert into private.admin_allowlist (email) values ('info@vastkustbygg.se') on conflict do nothing;
+insert into private.admin_allowlist (email) values ('info@cwenterprise.se') on conflict do nothing;
 
 insert into public.credit_balance (account_id, balance) values ('site', 100) on conflict (account_id) do nothing;
 insert into public.credit_transactions (amount, type, description, balance_after)
