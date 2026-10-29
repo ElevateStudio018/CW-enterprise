@@ -5,6 +5,7 @@ import { CookieSettingsButton } from "./CookieSettingsButton";
 import { list } from "@/lib/site/collection.ts";
 import { toTelHref } from "@/lib/site/format.ts";
 import type { SiteData } from "@/lib/site/schema.ts";
+import { ElevateCredit } from "./ElevateCredit";
 
 /** The dark footer: logo and a line about the company, the services, the other pages and how to get in touch. */
 export function Footer({ site }: { site: SiteData }) {
@@ -82,10 +83,8 @@ export function Footer({ site }: { site: SiteData }) {
               </>
             )}
           </span>
-          <a href="https://elevatestudio.nu" target="_blank" rel="noopener">
-            Byggd av Elevate Studio
-          </a>
         </div>
+        <ElevateCredit />
       </div>
     </footer>
   );
