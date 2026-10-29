@@ -13,9 +13,9 @@ export function ElevateCredit() {
         href="https://elevatestudio.nu"
         target="_blank"
         rel="noopener"
-        className="inline-flex items-center gap-2 py-2 text-[13px] text-footer-text/55 transition-colors duration-200 hover:text-footer-text focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-footer-text lg:text-[14px]"
+        className="inline-flex items-center gap-2.5 py-2 text-[15px] text-footer-text/55 transition-colors duration-200 hover:text-footer-text focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-footer-text lg:text-[16px]"
       >
-        <span aria-hidden="true" className="block h-4 w-4 shrink-0 bg-current" style={{ mask, WebkitMask: mask }} />
+        <span aria-hidden="true" className="block h-5 w-5 shrink-0 bg-current" style={{ mask, WebkitMask: mask }} />
         Byggd av Elevate Studio
       </a>
     </p>
