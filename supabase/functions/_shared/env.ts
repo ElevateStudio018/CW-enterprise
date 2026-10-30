@@ -15,7 +15,8 @@ export const config = {
   supabaseUrl: () => env("SUPABASE_URL"),
   anonKey: () => env("SUPABASE_ANON_KEY"),
   serviceRoleKey: () => env("SUPABASE_SERVICE_ROLE_KEY"),
-  /** The public site, for links in e-mails. */
+  /** The public site, for links in e-mails. SITE_URL, ADMIN_URL and ALLOWED_ORIGINS are set as secrets when the site
+   * moves to https://cwenterprise.se (see LANSERING.md); the defaults are the GitHub Pages preview. */
   siteUrl: () => env("SITE_URL", "https://elevatestudio018.github.io/CW-enterprise"),
   /** The admin panel, for links in e-mails. */
   adminUrl: () => env("ADMIN_URL", `${env("SITE_URL", "https://elevatestudio018.github.io/CW-enterprise")}/admin`),

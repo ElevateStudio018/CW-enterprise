@@ -4,7 +4,7 @@ Hemsida för CW Enterprise AB (Management Consulting, CWE Fastighetsförvaltning
 Bygg & Montage AB), med samma adminpanel som Västkust Bygg & Montages nya hemsida: ägaren ändrar texter, bilder,
 färger och sidor själv, får förfrågningarna i panelen och kan be AI-assistenten om ändringar.
 
-- Hemsidan: https://elevatestudio018.github.io/CW-enterprise/
+- Hemsidan: https://elevatestudio018.github.io/CW-enterprise/ (blir https://cwenterprise.se/ vid lanseringen, se [LANSERING.md](LANSERING.md))
 - Adminpanelen: https://elevatestudio018.github.io/CW-enterprise/admin/
 - Supabase-projekt: `cw-enterprise` (ref `chnvmoxbsrefeahqgfht`, Stockholm)
 
@@ -12,7 +12,7 @@ Kvar att göra för att komma igång: se [SETUP.md](SETUP.md).
 
 ## Så hänger det ihop
 
-- **Next.js** med statisk export (basePath `/CW-enterprise`). Allt innehåll är ett dokument (`lib/site/schema.ts`);
+- **Next.js** med statisk export (basePath `/CW-enterprise` på förhandsvisningen, `/` på cwenterprise.se; styrs av repovariabeln `SITE_DOMAIN`). Allt innehåll är ett dokument (`lib/site/schema.ts`);
   varje sida är en lista sektioner som ritas av `components/sections/`.
 - **Utseendet** kommer från temat i adminpanelen: Josefin Sans (rubriker, som på den tidigare hemsidan), Nunito Sans,
   och färgerna från loggorna. `app/site.css` har stilarna.
@@ -31,6 +31,8 @@ GITHUB_PAGES=true npm run build   # som på GitHub Pages, till out/
 python3 tools/make_baseline.py    # ursprungsinnehållet, content/baseline.json
 node scripts/sync-shared.mjs      # efter ändringar i lib/site eller content/baseline.json
 node scripts/bundle-functions.mjs # paketerar Edge Functions till supabase/bundles/
+node scripts/check-build.mjs out  # kontrollerar länkar, bilder och adresser i ett färdigt bygge
+npx tsx supabase/tests/changeset.test.ts
 ```
 
 ## Innehållet – gå igenom

@@ -35,7 +35,8 @@ Västkust-projektet fungerar, men GitHub-nyckeln måste ha tillgång till repot 
 ### Vid lansering
 
 - Secret `QUOTE_NOTIFY_EMAIL` = `info@cwenterprise.se`, så att förfrågningarna går dit.
-- Egen domän: `EMAIL_FROM`, `SITE_URL`, `ADMIN_URL` och `ALLOWED_ORIGINS` (se `supabase/functions/.env.example`).
+- Egen domän: se [LANSERING.md](LANSERING.md). `ALLOWED_ORIGINS` och redirect-adresserna för cwenterprise.se är redan inlagda;
+  `SITE_URL`, `ADMIN_URL` och Site URL sätts vid lanseringen. `EMAIL_FROM` när domänen är verifierad i Resend.
 
 ## För Claude: lägga in backend igen
 

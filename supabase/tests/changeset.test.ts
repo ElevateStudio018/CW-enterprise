@@ -22,7 +22,7 @@ const run = (operations: Operation[]) => {
   assert.deepEqual(applied.problems, [], applied.problems.join("\n"));
   return { applied, price: priceChangeSet(site, applied.doc!, operations) };
 };
-const sections = ["pages", "items", "om-oss", "sections"];
+const sections = ["pages", "items", "kontakt", "sections"];
 
 test("a new advanced section costs 20, and its own items are not counted again", () => {
   const team = { ...newSection("team"), hidden: false, heading: "Vi som jobbar här", members: { order: ["anna"], items: { anna: { name: "Anna", role: "Projektledare", phone: "", email: "", image: null } } } };
@@ -36,20 +36,20 @@ test("a new standard section costs 15", () => {
   assert.equal(price.total, 15);
 });
 
-test("three new FAQ questions cost 5 each", () => {
-  const path = ["pages", "items", "hem", "sections", "items", "fragor", "items"];
-  const ops: Operation[] = [1, 2, 3].map((n) => ({ op: "insert", path, id: `ny-${n}`, place: "last", afterId: "", itemJson: JSON.stringify({ question: `Fråga ${n}?`, answer: "Svar." }) }));
+test("three new timeline entries cost 5 each", () => {
+  const path = ["pages", "items", "hem", "sections", "items", "uppdrag", "items"];
+  const ops: Operation[] = [1, 2, 3].map((n) => ({ op: "insert", path, id: `ny-${n}`, place: "last", afterId: "", itemJson: JSON.stringify({ title: `Uppdrag ${n}`, text: "", start: "2026-01", end: "2026-06" }) }));
   assert.equal(run(ops).price.total, 15);
 });
 
 test("a heading is a minor change (1); rewriting a section's texts costs 3", () => {
   const hero = ["pages", "items", "hem", "sections", "items", "hero"];
-  assert.equal(run([{ op: "set", path: [...hero, "heading"], valueJson: JSON.stringify("Badrum i Göteborg") }]).price.total, 1);
-  const about = ["pages", "items", "hem", "sections", "items", "om-oss"];
+  assert.equal(run([{ op: "set", path: [...hero, "heading"], valueJson: JSON.stringify("Leder och förvaltar") }]).price.total, 1);
+  const model = ["pages", "items", "hem", "sections", "items", "modell"];
   const rewrite: Operation[] = [
-    { op: "set", path: [...about, "heading"], valueJson: JSON.stringify("Om Västkust Bygg") },
-    { op: "set", path: [...about, "subheading"], valueJson: JSON.stringify("Vi har gjort mark- och grundarbeten sedan 2002.") },
-    { op: "set", path: [...about, "text"], valueJson: JSON.stringify("Ny text om företaget.") },
+    { op: "set", path: [...model, "heading"], valueJson: JSON.stringify("Tre verksamheter på en grund") },
+    { op: "set", path: [...model, "text"], valueJson: JSON.stringify("Ny text om verksamheterna.") },
+    { op: "set", path: [...model, "caption"], valueJson: JSON.stringify("Vrid modellen.") },
   ];
   assert.equal(run(rewrite).price.total, 3);
 });
@@ -61,14 +61,14 @@ test("colours cost 2 however many change; a page's SEO costs 8", () => {
   ];
   assert.equal(run(ops).price.total, 2);
   const seo: Operation[] = [
-    { op: "set", path: ["pages", "items", "om-oss", "seo", "title"], valueJson: JSON.stringify("Om oss – markentreprenör i Kungälv") },
-    { op: "set", path: ["pages", "items", "om-oss", "seo", "description"], valueJson: JSON.stringify("Västkust Bygg bygger och renoverar i Göteborg och Kungsbacka.") },
+    { op: "set", path: ["pages", "items", "kontakt", "seo", "title"], valueJson: JSON.stringify("Kontakta CW Enterprise") },
+    { op: "set", path: ["pages", "items", "kontakt", "seo", "description"], valueJson: JSON.stringify("Ring, mejla eller skriv till CW Enterprise i Kullavik.") },
   ];
   assert.equal(run(seo).price.total, 8);
 });
 
 test("mistakes are reported instead of applied: unknown ids, broken links, invented images, bad values", () => {
-  const faq = ["pages", "items", "hem", "sections", "items", "fragor", "items"];
+  const faq = ["pages", "items", "hem", "sections", "items", "uppdrag", "items"];
   const problems = (ops: Operation[]) => applyChangeSet(site, ops, known).problems.join(" ");
   assert.match(problems([{ op: "remove", path: faq, id: "finns-inte" }]), /no item "finns-inte"/);
   assert.match(problems([{ op: "set", path: ["pages", "items", "hem", "sections", "items", "hero", "button", "href"], valueJson: JSON.stringify("/finns-inte") }]), /leads to a page/);
@@ -83,11 +83,11 @@ test("mistakes are reported instead of applied: unknown ids, broken links, inven
 test("an existing image can be reused by its src; its size variants come back", () => {
   const hero = site.pages.items.hem.sections.items.hero;
   if (hero.type !== "hero") throw new Error("hero expected");
-  const path = ["pages", "items", "om-oss", "sections", "items", "bild", "image"];
-  const { applied } = run([{ op: "set", path, valueJson: JSON.stringify({ src: hero.image.src, alt: "Två arbetare vid en byggarbetsplats" }) }]);
-  const image = (applied.doc!.pages.items["om-oss"].sections.items.bild as { image: { variants: unknown[]; alt: string } }).image;
+  const path = ["pages", "items", "kontakt", "sections", "items", "bild", "image"];
+  const { applied } = run([{ op: "set", path, valueJson: JSON.stringify({ src: hero.image.src, alt: "Vandrare på fjället" }) }]);
+  const image = (applied.doc!.pages.items["kontakt"].sections.items.bild as { image: { variants: unknown[]; alt: string } }).image;
   assert.equal(image.variants.length, hero.image.variants.length);
-  assert.equal(image.alt, "Två arbetare vid en byggarbetsplats");
+  assert.equal(image.alt, "Vandrare på fjället");
 });
 
 test("content read back from the database (keys sorted) prices only what changed", () => {
@@ -98,7 +98,7 @@ test("content read back from the database (keys sorted) prices only what changed
         ? Object.fromEntries(Object.keys(value).sort().map((key) => [key, sortKeys((value as Record<string, unknown>)[key])]))
         : value;
   const fromDatabase = sortKeys(site) as typeof site;
-  const op: Operation = { op: "insert", path: ["pages", "items", "hem", "sections", "items", "fragor", "items"], id: "ny", place: "last", afterId: "", itemJson: JSON.stringify({ question: "Fråga?", answer: "Svar." }) };
+  const op: Operation = { op: "insert", path: ["pages", "items", "hem", "sections", "items", "uppdrag", "items"], id: "ny", place: "last", afterId: "", itemJson: JSON.stringify({ title: "Nytt uppdrag", text: "", start: "2026-01", end: "" }) };
   const applied = applyChangeSet(fromDatabase, [op], imagesBySrc(fromDatabase));
   assert.deepEqual(applied.problems, []);
   const price = priceChangeSet(fromDatabase, applied.doc!, [op]);

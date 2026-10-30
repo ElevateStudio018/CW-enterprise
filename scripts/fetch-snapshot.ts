@@ -8,6 +8,15 @@ import { downloadFonts } from "./fonts.ts";
 
 const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
 const key = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+/** The site's public address when it differs from the content's (the workflow sets it for the customer's domain). */
+const siteUrlOverride = process.env.SITE_URL?.replace(/\/$/, "");
+
+/** The content with the site's address replaced, so canonical links, the sitemap and social previews name the right host. */
+function withSiteUrl(site: SiteData): SiteData {
+  if (!siteUrlOverride || site.settings.siteUrl === siteUrlOverride) return site;
+  console.log(`snapshot: using site address ${siteUrlOverride} instead of ${site.settings.siteUrl}`);
+  return { ...site, settings: { ...site.settings, siteUrl: siteUrlOverride } };
+}
 const out = "content/snapshot.json";
 const fontsOut = "content/fonts.json";
 
@@ -37,7 +46,7 @@ async function fetchPublished(): Promise<{ version: number; data: unknown }> {
 
 async function main() {
   if (!url || !key) {
-    const baseline = siteDataSchema.parse(JSON.parse(readFileSync("content/baseline.json", "utf8")));
+    const baseline = withSiteUrl(siteDataSchema.parse(JSON.parse(readFileSync("content/baseline.json", "utf8"))));
     writeFileSync(out, JSON.stringify(baseline));
     await writeFonts(baseline);
     console.log("snapshot: not connected to Supabase, using content/baseline.json");
@@ -50,8 +59,9 @@ async function main() {
     console.error("snapshot: the published content does not match the schema:", parsed.error.issues.slice(0, 10));
     process.exit(1);
   }
-  writeFileSync(out, JSON.stringify(parsed.data));
-  await writeFonts(parsed.data);
+  const site = withSiteUrl(parsed.data);
+  writeFileSync(out, JSON.stringify(site));
+  await writeFonts(site);
   // The admin compares this with the published version to tell when the new site is live.
   writeFileSync("public/site-version.json", JSON.stringify({ version }));
   console.log(`snapshot: published version ${version} from Supabase`);

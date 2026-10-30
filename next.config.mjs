@@ -1,6 +1,8 @@
 /** @type {import('next').NextConfig} */
 const isGithubPages = process.env.GITHUB_PAGES === "true";
-const basePath = isGithubPages ? "/CW-enterprise" : "";
+// Where the site lives under its host. On the GitHub Pages preview that is /CW-enterprise; on the customer's own
+// domain (SITE_BASE_PATH set to "" by the workflow when SITE_DOMAIN is configured) it is the root.
+const basePath = isGithubPages ? (process.env.SITE_BASE_PATH ?? "/CW-enterprise") : "";
 
 const nextConfig = {
   reactStrictMode: true,
@@ -11,7 +13,7 @@ const nextConfig = {
   env: {
     NEXT_PUBLIC_BASE_PATH: basePath,
   },
-  // Only applied for the GitHub Pages preview build (see .github/workflows/deploy-pages.yml).
+  // Only applied for the GitHub Pages build (see .github/workflows/deploy-pages.yml).
   // The real deployment (Vercel etc.) keeps a normal Next.js server build.
   ...(isGithubPages && {
     output: "export",

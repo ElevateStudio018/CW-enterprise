@@ -2,6 +2,11 @@ name: Deploy site to GitHub Pages
 
 # Builds the public site from the published content in Supabase and puts it on the gh-pages branch, which GitHub
 # Pages serves. Runs on pushes and when the admin panel's Publish button dispatches it (GITHUB_DISPATCH_TOKEN).
+#
+# Where the site is served from is a repository variable (Settings → Secrets and variables → Actions → Variables):
+#   SITE_DOMAIN unset  → the preview at https://elevatestudio018.github.io/CW-enterprise/ (base path /CW-enterprise)
+#   SITE_DOMAIN = cwenterprise.se → the customer's domain at the root, with the CNAME file GitHub Pages needs
+# Setting the variable is the launch switch; see LANSERING.md.
 on:
   push:
     branches: [main, claude/ny-webbplats]
@@ -17,6 +22,8 @@ concurrency:
 jobs:
   deploy:
     runs-on: ubuntu-latest
+    env:
+      SITE_DOMAIN: ${{ vars.SITE_DOMAIN }}
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -24,14 +31,30 @@ jobs:
           node-version: 20
           cache: npm
       - run: npm ci
+      - name: Choose the site's address
+        run: |
+          if [ -n "$SITE_DOMAIN" ]; then
+            echo "SITE_BASE_PATH=" >> "$GITHUB_ENV"
+            echo "SITE_URL=https://$SITE_DOMAIN" >> "$GITHUB_ENV"
+            echo "Building for https://$SITE_DOMAIN/"
+          else
+            echo "SITE_BASE_PATH=/CW-enterprise" >> "$GITHUB_ENV"
+            echo "Building for the GitHub Pages preview under /CW-enterprise/"
+          fi
       - run: npm run build
         env:
           GITHUB_PAGES: "true"
           # The site's Supabase project (public values, row level security protects the data). Repository variables
-          # (Settings → Secrets and variables → Actions → Variables) override the project ref chnvmoxbsrefeahqgfht.
+          # override the project ref chnvmoxbsrefeahqgfht.
           NEXT_PUBLIC_SUPABASE_URL: ${{ vars.NEXT_PUBLIC_SUPABASE_URL || 'https://chnvmoxbsrefeahqgfht.supabase.co' }}
           NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{ vars.NEXT_PUBLIC_SUPABASE_ANON_KEY || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImNobnZtb3hic3JlZmVhaHFnZmh0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTIzOTYyMjcsImV4cCI6MjEwNzk3MjIyN30.XmL2DAxQbHZWdJzX9109P36_3qrjGwgC0jPzCxRa-AM' }}
-      - run: touch out/.nojekyll
+      - name: Files GitHub Pages needs
+        run: |
+          touch out/.nojekyll
+          # The custom domain lives in the published branch; the force-push below would otherwise drop it.
+          if [ -n "$SITE_DOMAIN" ]; then echo "$SITE_DOMAIN" > out/CNAME; fi
+      - name: Check the build
+        run: node scripts/check-build.mjs out
       - name: Publish to gh-pages
         run: |
           cd out
