@@ -11,6 +11,9 @@ on:
   push:
     branches: [main, claude/ny-webbplats]
   workflow_dispatch:
+  # Picks up what is published in the admin panel even without GITHUB_DISPATCH_TOKEN (then within the hour).
+  schedule:
+    - cron: "17 * * * *"
 
 permissions:
   contents: write
