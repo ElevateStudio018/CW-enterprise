@@ -4,9 +4,9 @@ name: Deploy site to GitHub Pages
 # Pages serves. Runs on pushes and when the admin panel's Publish button dispatches it (GITHUB_DISPATCH_TOKEN).
 #
 # Where the site is served from is a repository variable (Settings → Secrets and variables → Actions → Variables):
-#   SITE_DOMAIN unset  → the preview at https://elevatestudio018.github.io/CW-enterprise/ (base path /CW-enterprise)
-#   SITE_DOMAIN = cwenterprise.se → the customer's domain at the root, with the CNAME file GitHub Pages needs
-# Setting the variable is the launch switch; see LANSERING.md.
+#   default (no variable) → the customer's domain cwenterprise.se at the root, with the CNAME file GitHub Pages needs
+#   SITE_DOMAIN = another domain → that domain instead
+# GitHub Pages already redirects the old preview address there; see LANSERING.md.
 on:
   push:
     branches: [main, claude/ny-webbplats]
@@ -23,7 +23,7 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     env:
-      SITE_DOMAIN: ${{ vars.SITE_DOMAIN }}
+      SITE_DOMAIN: ${{ vars.SITE_DOMAIN || 'cwenterprise.se' }}
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4

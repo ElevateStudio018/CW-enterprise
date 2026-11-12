@@ -12,7 +12,7 @@ Kvar att göra för att komma igång: se [SETUP.md](SETUP.md).
 
 ## Så hänger det ihop
 
-- **Next.js** med statisk export (basePath `/CW-enterprise` på förhandsvisningen, `/` på cwenterprise.se; styrs av repovariabeln `SITE_DOMAIN`). Allt innehåll är ett dokument (`lib/site/schema.ts`);
+- **Next.js** med statisk export (basePath `/CW-enterprise` på förhandsvisningen, `/` på cwenterprise.se; domänen sätts i `.github/workflows/deploy-pages.yml`). Allt innehåll är ett dokument (`lib/site/schema.ts`);
   varje sida är en lista sektioner som ritas av `components/sections/`.
 - **Utseendet** kommer från temat i adminpanelen: Josefin Sans (rubriker, som på den tidigare hemsidan), Nunito Sans,
   och färgerna från loggorna. `app/site.css` har stilarna.

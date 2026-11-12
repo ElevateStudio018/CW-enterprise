@@ -14,17 +14,13 @@ Mejlen (Microsoft 365) påverkas inte, så länge bara de poster som nämns här
   Namnservrarna ska inte ändras.
 - **Mejl:** Microsoft 365 (MX `cwenterprise-se.mail.protection.outlook.com`, SPF, DMARC, autodiscover). Rör inte.
 
-## Lanseringsknappen
+## Bygget
 
-Allt styrs av en variabel i GitHub-repot: **Settings → Secrets and variables → Actions → Variables → `SITE_DOMAIN`**.
-
-| `SITE_DOMAIN` | Bygget | Adress |
-| --- | --- | --- |
-| saknas | base path `/CW-enterprise`, ingen CNAME-fil | https://elevatestudio018.github.io/CW-enterprise/ |
-| `cwenterprise.se` | roten `/`, `out/CNAME` = cwenterprise.se, canonical/sitemap/Open Graph mot https://cwenterprise.se | https://cwenterprise.se/ |
-
-Så länge variabeln saknas ändras ingenting för besökarna. Kodändringarna är redan gjorda och testade i båda lägena
-(`scripts/check-build.mjs` kontrollerar varje bygge innan det publiceras).
+Workflowet bygger sajten för **cwenterprise.se** (roten `/`, `out/CNAME` = cwenterprise.se, canonical/sitemap/Open
+Graph mot https://cwenterprise.se). En repovariabel `SITE_DOMAIN` (Settings → Secrets and variables → Actions →
+Variables) kan ange en annan domän, men behövs inte. GitHub Pages har custom domain cwenterprise.se och skickar redan
+den gamla förhandsadressen https://elevatestudio018.github.io/CW-enterprise/ vidare dit. Fram till DNS-bytet visar
+cwenterprise.se den gamla sajten hos one.com. `scripts/check-build.mjs` kontrollerar varje bygge innan det publiceras.
 
 ## DNS-poster att ändra (Microsoft 365 admin center)
 
@@ -61,10 +57,8 @@ Räkna med 30–60 minuter, varav besökarna märker av bytet under några minut
 
 1. **GitHub:** Settings → Pages → Custom domain: skriv `cwenterprise.se`, Save. GitHub varnar att DNS inte stämmer än;
    det är väntat.
-2. **GitHub:** Settings → Secrets and variables → Actions → Variables → New: `SITE_DOMAIN` = `cwenterprise.se`.
-3. **GitHub:** Actions → *Deploy site to GitHub Pages* → Run workflow. Vänta tills det är grönt (ca 2–3 min). Nu ligger
-   sajten byggd för roten med CNAME på `gh-pages`. Förhandsadressen under /CW-enterprise/ slutar fungera i och med
-   detta; det är lanseringen.
+2. **GitHub:** (gjort) bygget är redan för cwenterprise.se, se *Bygget* ovan.
+3. **GitHub:** (gjort) `gh-pages` innehåller sajten byggd för roten med CNAME.
 4. **Microsoft 365:** ändra DNS-posterna enligt tabellen ovan. Under spridningen (vanligen 5–30 min, TTL 3600 på de
    gamla posterna kan ge upp till en timme) ser en del besökare den gamla sajten och andra den nya. Mejlen påverkas inte.
 5. **GitHub:** Settings → Pages. När DNS-kontrollen blir grön utfärdar GitHub ett certifikat (några minuter upp till
@@ -95,8 +89,9 @@ Den gamla hemsidan finns kvar orörd på one.com tills någon tar bort den där.
 
 1. Microsoft 365: ta bort de nya A/AAAA-posterna på @ och lägg tillbaka `A @ 77.111.240.187`; ändra `CNAME www`
    tillbaka till `cwenterprise.se.www.service.one.com`.
-2. GitHub: ta bort `SITE_DOMAIN`-variabeln och kör workflowet igen, så fungerar förhandsadressen
-   https://elevatestudio018.github.io/CW-enterprise/ på nytt. Ta bort custom domain under Settings → Pages.
+2. GitHub: behövs inte för att den gamla sajten ska synas igen. För att få tillbaka förhandsadressen: ta bort
+   custom domain under Settings → Pages och ändra standarddomänen `'cwenterprise.se'` i
+   `.github/workflows/deploy-pages.yml` till `''`, så byggs förhandsvisningen under /CW-enterprise/ igen.
 3. Supabase: sätt tillbaka `SITE_URL`/`ADMIN_URL` och Site URL till github.io-adressen om de ändrats.
 
 Återställningen tar lika lång tid som DNS-spridningen, normalt 5–30 minuter.
