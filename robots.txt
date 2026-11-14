@@ -1,0 +1,6 @@
+User-Agent: *
+Allow: /
+Disallow: /admin/
+Disallow: /forslag/
+
+Sitemap: https://cwenterprise.se/sitemap.xml
