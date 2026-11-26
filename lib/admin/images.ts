@@ -1,12 +1,13 @@
 // Images: checked by their contents (never their name), cropped in the browser, stored as WebP in several widths so
-// phones load small copies, and recorded in website_images with their alt text and focus point.
+// phones load small copies, committed to the site's repository under public/photos/uploads and listed with their alt
+// text and focus point in content/images.json.
 import type { SiteImage } from "@/lib/site/schema.ts";
-import { supabase } from "./supabase";
-import { supabaseUrl } from "./config";
+import { UPLOADS_DIR, branch, commitFiles, deleteFiles, readFile, repository } from "./github";
+
+const IMAGES_PATH = "content/images.json";
 
 export const MAX_BYTES = 10 * 1024 * 1024;
 const WIDTHS = [480, 800, 1200, 1600, 2400];
-const BUCKET = "site-images";
 
 export interface ImageRow {
   id: string;
@@ -89,8 +90,28 @@ async function render(source: ImageBitmap, crop: CropRect, width: number): Promi
   return { blob: jpeg, ext: "jpg", height };
 }
 
+/** Where the site serves an uploaded copy (path inside the uploads folder). */
 export function publicUrl(path: string): string {
-  return `${supabaseUrl}/storage/v1/object/public/${BUCKET}/${path}`;
+  return `/photos/uploads/${path}`;
+}
+
+/** The same file straight from the repository: available at once, before the site has been rebuilt. */
+export function rawUrl(src: string): string {
+  return `https://raw.githubusercontent.com/${repository}/${branch}/public${src}`;
+}
+
+async function readRows(): Promise<ImageRow[]> {
+  const file = await readFile(IMAGES_PATH);
+  return file ? (JSON.parse(file.text) as ImageRow[]) : [];
+}
+
+function blobToBase64(blob: Blob): Promise<string> {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = () => resolve(String(reader.result).split(",")[1] ?? "");
+    reader.onerror = () => reject(new Error("Bilden kunde inte läsas i webbläsaren."));
+    reader.readAsDataURL(blob);
+  });
 }
 
 /** Crops, makes the copies, uploads them and records the image. */
@@ -111,57 +132,47 @@ export async function uploadImage(options: {
   const variants: { width: number; path: string }[] = [];
   let bytes = 0;
   let finalHeight = 0;
+  const files: { path: string; base64: string }[] = [];
   for (const [index, width] of unique.entries()) {
     const { blob, ext, height } = await render(source, crop, width);
     const path = `${id}/${width}.${ext}`;
-    const { error } = await supabase().storage.from(BUCKET).upload(path, blob, { contentType: blob.type, cacheControl: "31536000", upsert: false });
-    if (error) {
-      await supabase().storage.from(BUCKET).remove(variants.map((v) => v.path));
-      throw error;
-    }
+    files.push({ path: `${UPLOADS_DIR}/${path}`, base64: await blobToBase64(blob) });
     variants.push({ width, path });
     bytes += blob.size;
     finalHeight = height;
     options.onProgress?.(index + 1, unique.length);
   }
-  const { data, error } = await supabase()
-    .from("website_images")
-    .insert({
-      storage_path: id,
-      usage_key: options.usage,
-      file_name: options.fileName.slice(0, 200),
-      alt_text: options.alt,
-      focal_point: options.focus,
-      width: unique[unique.length - 1],
-      height: finalHeight,
-      variants,
-      byte_size: bytes,
-    })
-    .select("*")
-    .single();
-  if (error) {
-    await supabase().storage.from(BUCKET).remove(variants.map((v) => v.path));
-    throw error;
-  }
-  return data as ImageRow;
+  const row: ImageRow = {
+    id,
+    storage_path: id,
+    usage_key: options.usage,
+    file_name: options.fileName.slice(0, 200),
+    alt_text: options.alt,
+    focal_point: options.focus,
+    width: unique[unique.length - 1],
+    height: finalHeight,
+    variants,
+    byte_size: bytes,
+    created_at: new Date().toISOString(),
+  };
+  const rows = [row, ...(await readRows())];
+  await commitFiles([...files, { path: IMAGES_PATH, text: JSON.stringify(rows, null, 2) + "\n" }], `Ladda upp bild: ${row.file_name}`);
+  return row;
 }
 
 export async function listImages(): Promise<ImageRow[]> {
-  const { data, error } = await supabase().from("website_images").select("*").order("created_at", { ascending: false });
-  if (error) throw error;
-  return data as ImageRow[];
+  return readRows();
 }
 
 export async function deleteImage(row: ImageRow): Promise<void> {
-  const { error } = await supabase().storage.from(BUCKET).remove(row.variants.map((v) => v.path));
-  if (error) throw error;
-  const { error: rowError } = await supabase().from("website_images").delete().eq("id", row.id);
-  if (rowError) throw rowError;
+  const rows = (await readRows()).filter((r) => r.id !== row.id);
+  await deleteFiles(row.variants.map((v) => `${UPLOADS_DIR}/${v.path}`), `Ta bort bild: ${row.file_name}`);
+  await commitFiles([{ path: IMAGES_PATH, text: JSON.stringify(rows, null, 2) + "\n" }], `Ta bort bild: ${row.file_name}`);
 }
 
 export async function updateImageDetails(id: string, details: { alt_text?: string; focal_point?: { x: number; y: number } }): Promise<void> {
-  const { error } = await supabase().from("website_images").update(details).eq("id", id);
-  if (error) throw error;
+  const rows = (await readRows()).map((r) => (r.id === id ? { ...r, ...details } : r));
+  await commitFiles([{ path: IMAGES_PATH, text: JSON.stringify(rows, null, 2) + "\n" }], "Uppdatera bildtext");
 }
 
 /** The image as the content refers to it: every copy for the srcset, the alt text and the focus point. */
@@ -180,6 +191,7 @@ export function toSiteImage(row: ImageRow, focus = row.focal_point, alt = row.al
 export function thumbnail(image: SiteImage): string {
   const smallest = [...image.variants].sort((a, b) => a.width - b.width)[0];
   const src = smallest?.src ?? image.src;
+  if (src.startsWith("/photos/uploads/")) return rawUrl(src);
   return src.startsWith("/") ? `${process.env.NEXT_PUBLIC_BASE_PATH ?? ""}${src}` : src;
 }
 

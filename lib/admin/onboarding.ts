@@ -1,8 +1,7 @@
-// The first-login checklist: five things that make the site the owner's own. Each ticks itself off when the content
+// The first-login checklist: four things that make the site the owner's own. Each ticks itself off when the content
 // shows it is done or the relevant save happens; when all are done the list goes away for good.
 import type { SiteData } from "@/lib/site/schema.ts";
 import type { Entry } from "./draftStore";
-import { supabase } from "./supabase";
 
 export interface OnboardingState {
   done: string[];
@@ -21,7 +20,6 @@ export const onboardingItems: OnboardingItem[] = [
   { id: "logo", label: "Ladda upp din logga", hint: "Visas i menyn och sidfoten", href: "/admin/installningar?flik=hemsida" },
   { id: "about", label: "Skriv om-oss-text", hint: "Berätta vilka ni är", href: "/admin/hemsidan?sida=om-oss" },
   { id: "colors", label: "Välj färger", hint: "Hemsidans färger och adminpanelens egen", href: "/admin/hemsidan?flik=farger" },
-  { id: "ai", label: "Testa AI-assistenten", hint: "Be den om en ändring", href: "/admin/ai" },
 ];
 
 /** Which items the content itself shows are done. */
@@ -51,11 +49,21 @@ export function itemForSave(entry: Entry, draft: SiteData | null): string | null
   return null;
 }
 
+// Kept in this browser: the checklist is a help on the way in, not shared state.
+const KEY = "site-admin-onboarding";
+
 export async function loadOnboarding(): Promise<OnboardingState> {
-  const { data } = await supabase().from("settings").select("value").eq("key", "onboarding").maybeSingle();
-  return (data?.value as OnboardingState) ?? { done: [] };
+  try {
+    return (JSON.parse(localStorage.getItem(KEY) ?? "null") as OnboardingState) ?? { done: [] };
+  } catch {
+    return { done: [] };
+  }
 }
 
 export async function saveOnboarding(state: OnboardingState): Promise<void> {
-  await supabase().rpc("save_setting", { p_key: "onboarding", p_value: state });
+  try {
+    localStorage.setItem(KEY, JSON.stringify(state));
+  } catch {
+    // Not saved: the list shows again next time.
+  }
 }

@@ -1,9 +1,7 @@
 "use client";
 
 import { createContext, useCallback, useContext, useEffect, useMemo, useState, type ReactNode } from "react";
-import type { Session } from "@supabase/supabase-js";
-import { callFunction, supabase } from "@/lib/admin/supabase";
-import { isConnected } from "@/lib/admin/config";
+import { getToken, setToken, verifyToken } from "@/lib/admin/github";
 
 export interface Profile {
   id: string;
@@ -13,11 +11,11 @@ export interface Profile {
 }
 
 interface AuthState {
-  /** "loading" until the stored session has been checked. */
+  /** "loading" until the stored key has been checked. */
   status: "loading" | "signed-out" | "signed-in" | "not-admin";
-  session: Session | null;
   profile: Profile | null;
-  signIn: (email: string, password: string) => Promise<void>;
+  /** Signs in with the site's key (a GitHub token allowed to change this site's repository). */
+  signIn: (key: string) => Promise<void>;
   signOut: () => Promise<void>;
   refreshProfile: () => Promise<void>;
 }
@@ -25,59 +23,46 @@ interface AuthState {
 const AuthContext = createContext<AuthState | null>(null);
 
 export function AuthProvider({ children }: { children: ReactNode }) {
-  const [session, setSession] = useState<Session | null>(null);
   const [profile, setProfile] = useState<Profile | null>(null);
   const [status, setStatus] = useState<AuthState["status"]>("loading");
 
-  const loadProfile = useCallback(async (current: Session | null) => {
-    if (!current) {
+  const check = useCallback(async () => {
+    const token = getToken();
+    if (!token) {
       setProfile(null);
       setStatus("signed-out");
       return;
     }
-    const { data } = await supabase().from("profiles").select("id, email, role, full_name").eq("id", current.user.id).maybeSingle();
-    if (data?.role === "admin") {
-      setProfile({ id: data.id, email: data.email, role: "admin", fullName: data.full_name ?? "" });
+    try {
+      const name = await verifyToken(token);
+      setProfile({ id: "github", email: "", role: "admin", fullName: name });
       setStatus("signed-in");
-    } else {
+    } catch {
+      setToken(null);
       setProfile(null);
-      setStatus("not-admin");
+      setStatus("signed-out");
     }
   }, []);
 
   useEffect(() => {
-    if (!isConnected) {
-      setStatus("signed-out");
-      return;
-    }
-    const client = supabase();
-    client.auth.getSession().then(({ data }) => {
-      setSession(data.session);
-      void loadProfile(data.session);
-    });
-    const { data: subscription } = client.auth.onAuthStateChange((event, next) => {
-      setSession(next);
-      // Outside the callback: Supabase calls made inside it can wait on each other forever.
-      if (event === "SIGNED_IN" || event === "SIGNED_OUT" || event === "USER_UPDATED") setTimeout(() => void loadProfile(next), 0);
-    });
-    return () => subscription.subscription.unsubscribe();
-  }, [loadProfile]);
+    void check();
+  }, [check]);
 
-  const signIn = useCallback(async (email: string, password: string) => {
-    // Through the admin-login function, which limits failed attempts.
-    const { session: tokens } = await callFunction<{ session: { access_token: string; refresh_token: string } }>("admin-login", { email, password });
-    const { error } = await supabase().auth.setSession({ access_token: tokens.access_token, refresh_token: tokens.refresh_token });
-    if (error) throw error;
+  const signIn = useCallback(async (key: string) => {
+    const token = key.trim();
+    const name = await verifyToken(token);
+    setToken(token);
+    setProfile({ id: "github", email: "", role: "admin", fullName: name });
+    setStatus("signed-in");
   }, []);
 
   const signOut = useCallback(async () => {
-    await supabase().auth.signOut();
+    setToken(null);
+    setProfile(null);
+    setStatus("signed-out");
   }, []);
 
-  const value = useMemo<AuthState>(
-    () => ({ status, session, profile, signIn, signOut, refreshProfile: () => loadProfile(session) }),
-    [status, session, profile, signIn, signOut, loadProfile]
-  );
+  const value = useMemo<AuthState>(() => ({ status, profile, signIn, signOut, refreshProfile: check }), [status, profile, signIn, signOut, check]);
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 }
 

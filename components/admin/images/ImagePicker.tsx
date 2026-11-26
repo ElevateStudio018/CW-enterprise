@@ -22,7 +22,7 @@ import {
   type CropRect,
   type ImageRow,
 } from "@/lib/admin/images";
-import { errorMessage } from "@/lib/admin/supabase";
+import { errorMessage } from "@/lib/admin/errors";
 import type { SiteImage } from "@/lib/site/schema.ts";
 
 interface Pending {

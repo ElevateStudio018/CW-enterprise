@@ -2,7 +2,6 @@
 
 import { useEffect, useState } from "react";
 import { basePath } from "./config";
-import { supabase } from "./supabase";
 
 export type DeployPhase = "idle" | "updating" | "live" | "failed" | "not_configured";
 
@@ -31,8 +30,8 @@ export function useDeployStatus(publishedVersion: number): { phase: DeployPhase;
       } catch {
         // The file is only there on a connected build; keep asking quietly.
       }
-      const { data } = await supabase().from("settings").select("value").eq("key", "deploy").maybeSingle();
-      if (!stopped && data?.value?.status) setDeployState(data.value.status as string);
+      // Publishing commits to GitHub, which starts the build by itself.
+      if (!stopped) setDeployState("started");
       if (!stopped && Date.now() - started < 10 * 60_000) timer = setTimeout(check, 8000);
     }
     void check();

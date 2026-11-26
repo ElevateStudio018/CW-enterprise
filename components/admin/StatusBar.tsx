@@ -1,13 +1,11 @@
 "use client";
 
-import Link from "next/link";
-import { AlertTriangle, Check, CloudUpload, Coins } from "lucide-react";
-import { useAdminData, useDraft } from "@/contexts/admin/AdminDataContext";
+import { AlertTriangle, Check, CloudUpload } from "lucide-react";
+import { useDraft } from "@/contexts/admin/AdminDataContext";
 
-/** Save state and credit balance, always in view at the top right on computers; on phones only the save state fits. */
+/** Save state, always in view at the top right (on phones as an icon only). */
 export function StatusBar({ compact = false }: { compact?: boolean }) {
   const { saveState } = useDraft();
-  const { credits } = useAdminData();
 
   const save = {
     idle: { icon: Check, text: "Sparat", tone: "text-admin-muted" },
@@ -27,15 +25,6 @@ export function StatusBar({ compact = false }: { compact?: boolean }) {
           {saveState === "idle" || saveState === "saved" ? " ✓" : ""}
         </span>
       </p>
-      {!compact && (
-        <Link
-          href="/admin/installningar?flik=credits"
-          className="flex min-h-9 items-center gap-1.5 rounded-full px-3 text-[13px] font-semibold text-admin-ink transition hover:bg-stone-900/[0.05] focus-visible:outline focus-visible:outline-2 focus-visible:outline-admin"
-        >
-          <Coins aria-hidden="true" className="h-4 w-4 text-admin" />
-          {credits === null ? <span className="inline-block h-3 w-10 animate-pulse rounded bg-stone-200" /> : `${credits} credits`}
-        </Link>
-      )}
     </div>
   );
 }

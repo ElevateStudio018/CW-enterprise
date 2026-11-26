@@ -3,11 +3,14 @@
 // - Edits show at once (optimistic) and go into an outbox, kept in IndexedDB so they survive a reload or going offline.
 // - The outbox is sent field by field after 600 ms of quiet, and at once on blur, on leaving the page and before
 //   publishing. Failed sends retry with growing pauses; the text stays on screen meanwhile ("Ej sparat – försöker igen").
-// - A change someone made to the same field on another device is never overwritten silently: the editor asks.
+// - Saved edits are kept in this browser (the draft) until they are published; publishing commits content/site.json
+//   to the site's GitHub repository, which rebuilds the site (lib/admin/github.ts). If someone else published in the
+//   meantime, publishing stops and asks for a reload rather than overwriting their changes.
 // - The last 20 edits can be undone.
 import type { SiteData } from "@/lib/site/schema.ts";
 import { applyPatches, getAt, pathKey, setAt, type ContentPath, type Patch } from "@/lib/site/paths.ts";
-import { supabase, errorMessage, callFunction, FunctionError } from "./supabase";
+import { siteDataSchema } from "@/lib/site/schema.ts";
+import { CONTENT_PATH, VERSION_PATH, commitFiles, readFile, repository } from "./github";
 import { outboxDelete, outboxLoad, outboxPut, type OutboxRecord } from "./outbox";
 
 export type SaveState = "idle" | "dirty" | "saving" | "saved" | "error";
@@ -75,7 +78,51 @@ function clientId(): string {
   }
 }
 
+const DRAFT_KEY = `site-draft:${repository}`;
+
+interface StoredDraft {
+  baseSha: string;
+  draft: SiteData;
+  adminColors: Record<string, string>;
+}
+
+function readStored(): StoredDraft | null {
+  try {
+    const raw = localStorage.getItem(DRAFT_KEY);
+    return raw ? (JSON.parse(raw) as StoredDraft) : null;
+  } catch {
+    return null;
+  }
+}
+
+function writeStored(value: StoredDraft | null) {
+  try {
+    if (value) localStorage.setItem(DRAFT_KEY, JSON.stringify(value));
+    else localStorage.removeItem(DRAFT_KEY);
+  } catch {
+    // Storage full or blocked: the edits stay in the tab until published.
+  }
+}
+
+/** How many fields differ between the published content and the draft. */
+function countChanges(a: unknown, b: unknown): number {
+  if (a === b) return 0;
+  if (a && b && typeof a === "object" && typeof b === "object" && !Array.isArray(a) && !Array.isArray(b)) {
+    const keys = new Set([...Object.keys(a as object), ...Object.keys(b as object)]);
+    let n = 0;
+    for (const key of keys) n += countChanges((a as Record<string, unknown>)[key], (b as Record<string, unknown>)[key]);
+    return n;
+  }
+  return JSON.stringify(a) === JSON.stringify(b) ? 0 : 1;
+}
+
+function errorText(error: unknown, fallback: string): string {
+  return error instanceof Error && /[åäöÅÄÖ]/.test(error.message) ? error.message : fallback;
+}
+
 export class DraftStore {
+  private published: SiteData | null = null;
+  private contentSha = "";
   private state: DraftState = {
     status: "loading",
     loadError: null,
@@ -157,15 +204,6 @@ export class DraftStore {
     } catch {
       this.channel = null;
     }
-    // Changes from other devices arrive over Realtime when the project has it; a reload merges them in.
-    try {
-      supabase()
-        .channel("content-changes")
-        .on("postgres_changes", { event: "*", schema: "public", table: "website_content" }, () => this.scheduleReload())
-        .subscribe();
-    } catch {
-      // Realtime is a bonus; saving does not depend on it.
-    }
 
     const stored = await outboxLoad();
     for (const record of stored) {
@@ -175,29 +213,35 @@ export class DraftStore {
     await this.load();
   }
 
-  /** Fetches the draft and lays any unsent local edits over it, so nothing typed disappears. */
+  /** Fetches the published content and lays this browser's saved draft and any unsent edits over it. */
   async load() {
     try {
-      const { data, error } = await supabase().rpc("content_draft");
-      if (error) throw error;
-      let draft = data.draft as SiteData;
+      const file = await readFile(CONTENT_PATH);
+      if (!file) throw new Error("Hemsidans innehåll hittades inte i GitHub.");
+      const published = JSON.parse(file.text) as SiteData;
+      const versionFile = await readFile(VERSION_PATH);
+      const info = versionFile ? (JSON.parse(versionFile.text) as { version?: number; publishedAt?: string }) : {};
+      const stored = readStored();
+      let draft = stored?.draft ?? published;
       for (const entry of this.sortedOutbox()) draft = this.applyLocally(draft, entry);
-      this.serverChanges = Number(data.changes ?? 0);
+      this.published = published;
+      this.contentSha = file.sha;
+      this.serverChanges = countChanges(published, stored?.draft ?? published);
       this.set({
         status: "ready",
         loadError: null,
         draft,
-        version: data.version,
-        publishedAt: data.publishedAt,
-        marker: data.marker,
-        knownAt: data.knownAt,
-        themeChanged: Boolean(data.themeChanged),
-        adminColors: data.adminColors ?? {},
+        version: Number(info.version ?? 0),
+        publishedAt: info.publishedAt ?? null,
+        marker: file.sha,
+        knownAt: "",
+        themeChanged: JSON.stringify(draft.theme) !== JSON.stringify(published.theme),
+        adminColors: stored?.adminColors ?? {},
         pendingChanges: this.serverChanges + this.outbox.size,
       });
       if (this.outbox.size > 0) this.kick();
     } catch (error) {
-      if (this.state.status !== "ready") this.set({ status: "error", loadError: errorMessage(error, "Hemsidans innehåll kunde inte hämtas.") });
+      if (this.state.status !== "ready") this.set({ status: "error", loadError: errorText(error, "Hemsidans innehåll kunde inte hämtas.") });
     }
   }
 
@@ -206,13 +250,11 @@ export class DraftStore {
   /** Refreshes how many unpublished changes the server holds, a moment after saves settle. */
   private scheduleCount() {
     if (this.countTimer) clearTimeout(this.countTimer);
-    this.countTimer = setTimeout(async () => {
-      const { count } = await supabase().from("website_content").select("path", { count: "exact", head: true });
-      if (typeof count === "number") {
-        this.serverChanges = count;
-        this.set({ pendingChanges: count + this.outbox.size });
-      }
-    }, 800);
+    this.countTimer = setTimeout(() => {
+      if (!this.published || !this.state.draft) return;
+      this.serverChanges = countChanges(this.published, readStored()?.draft ?? this.published);
+      this.set({ pendingChanges: this.serverChanges + this.outbox.size });
+    }, 300);
   }
 
   private scheduleReload() {
@@ -406,14 +448,14 @@ export class DraftStore {
         this.outbox.delete(next.key);
         this.ready.delete(next.key);
         await outboxDelete(next.key);
-        if (next.kind === "patch") this.scheduleCount();
+        this.scheduleCount();
       }
       this.retryDelay = 1000;
       this.channel?.postMessage({ type: "saved" });
       this.savedListeners.forEach((listener) => listener(next));
       this.set({ saveError: null, pendingChanges: this.serverChanges + this.outbox.size });
     } catch (error) {
-      this.set({ saveState: "error", saveError: errorMessage(error, "Ändringen kunde inte sparas än.") });
+      this.set({ saveState: "error", saveError: errorText(error, "Ändringen kunde inte sparas än.") });
       this.retryTimer = setTimeout(() => this.kick(), this.retryDelay);
       this.retryDelay = Math.min(this.retryDelay * 2, 30_000);
       return;
@@ -431,31 +473,11 @@ export class DraftStore {
     }, 4000);
   }
 
-  private async send(entry: Entry, force = false): Promise<{ status: string; serverValue?: unknown }> {
-    const client = supabase();
-    if (entry.kind === "color") {
-      const { data, error } = await client.rpc("save_theme_color", { p_scope: entry.scope, p_key: entry.role, p_value: entry.value });
-      if (error) throw error;
-      return data;
-    }
-    if (entry.kind === "font") {
-      const { data, error } = await client.rpc("save_theme_font", { p_role: entry.role, p_family: entry.family, p_category: entry.category });
-      if (error) throw error;
-      return data;
-    }
-    const common = { p_known_at: this.state.knownAt, p_base_version: this.state.version, p_client_id: this.client, p_force: force };
-    if (entry.patches.length === 1) {
-      const [patch] = entry.patches;
-      const { data, error } = await client.rpc("save_content_patch", { p_path: patch.path, p_value: patch.value ?? null, p_op: patch.op, ...common });
-      if (error) throw error;
-      return data;
-    }
-    const { data, error } = await client.rpc("save_content_patches", {
-      p_patches: entry.patches.map((patch) => ({ path: patch.path, op: patch.op, value: patch.value ?? null })),
-      ...common,
-    });
-    if (error) throw error;
-    return data;
+  /** "Sends" an edit: the draft as it is now (with this edit) is kept in this browser until it is published. */
+  private async send(_entry: Entry, _force = false): Promise<{ status: string; serverValue?: unknown }> {
+    if (!this.state.draft) throw new Error("Innehållet är inte laddat än.");
+    writeStored({ baseSha: this.contentSha, draft: this.state.draft, adminColors: this.state.adminColors });
+    return { status: "saved" };
   }
 
   private mineOf(entry: Entry): unknown {
@@ -483,7 +505,7 @@ export class DraftStore {
           await outboxDelete(entry.key);
         }
       } catch (error) {
-        this.set({ saveState: "error", saveError: errorMessage(error) });
+        this.set({ saveState: "error", saveError: errorText(error, "Ändringen kunde inte sparas än.") });
       }
     } else if (entry) {
       this.outbox.delete(entry.key);
@@ -513,18 +535,34 @@ export class DraftStore {
     this.set({ publishing: true, publishIssues: [] });
     try {
       await this.drain();
-      const result = await callFunction<{ version: number; summary: string; deploy: { started: boolean; message?: string } }>("publish", {});
+      const draft = this.state.draft;
+      if (!draft) throw new Error("Innehållet är inte laddat än.");
+      const checked = siteDataSchema.safeParse(draft);
+      if (!checked.success) {
+        const issues = checked.error.issues.slice(0, 20).map((issue) => ({ path: issue.path.map(String), where: issue.path.join(" › "), message: issue.message }));
+        this.set({ publishIssues: issues });
+        throw new Error("Något fält behöver rättas innan du kan publicera.");
+      }
+      // Someone else published since this draft was loaded: stop rather than overwrite their changes.
+      const current = await readFile(CONTENT_PATH);
+      if (current && current.sha !== this.contentSha) throw new Error("Någon annan har publicerat under tiden. Ladda om sidan, så kommer dina ändringar med, och publicera igen.");
+      const changes = this.state.pendingChanges;
+      const version = this.state.version + 1;
+      const publishedAt = new Date().toISOString();
+      await commitFiles(
+        [
+          { path: CONTENT_PATH, text: JSON.stringify(checked.data, null, 2) + "\n" },
+          { path: VERSION_PATH, text: JSON.stringify({ version, publishedAt }) + "\n" },
+        ],
+        `Publicera ändringar från adminpanelen (version ${version})`
+      );
+      writeStored(null);
       this.serverChanges = 0;
       this.undoStack = [];
       this.channel?.postMessage({ type: "published" });
       await this.load();
       this.set({ canUndo: false });
-      return result;
-    } catch (error) {
-      if (error instanceof FunctionError && error.code === "invalid_content") {
-        this.set({ publishIssues: (error.payload as { issues?: PublishIssue[] })?.issues ?? [] });
-      }
-      throw error;
+      return { version, summary: `${changes} ${changes === 1 ? "ändring" : "ändringar"}`, deploy: { started: true } };
     } finally {
       this.set({ publishing: false });
     }
@@ -533,8 +571,7 @@ export class DraftStore {
   /** Throws away every unpublished change (after the person confirmed). */
   async discard() {
     await this.drain();
-    const { error } = await supabase().rpc("discard_draft");
-    if (error) throw error;
+    writeStored(null);
     this.serverChanges = 0;
     this.undoStack = [];
     await this.load();

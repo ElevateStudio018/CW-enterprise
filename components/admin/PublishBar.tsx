@@ -7,7 +7,7 @@ import { Dialog } from "./ui/Dialog";
 import { useToast } from "./ui/Toast";
 import { useDraft } from "@/contexts/admin/AdminDataContext";
 import { useDeployStatus } from "@/lib/admin/deploy";
-import { errorMessage } from "@/lib/admin/supabase";
+import { errorMessage } from "@/lib/admin/errors";
 
 /**
  * Unpublished changes and the Publicera button, then how the public site is catching up. Shown in the editor and on the

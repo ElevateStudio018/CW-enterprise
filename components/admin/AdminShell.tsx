@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState, type ReactNode } from "react";
-import { ExternalLink, Images, Inbox, LayoutDashboard, LogOut, Menu, PanelsTopLeft, Settings, Sparkles, X, type LucideIcon } from "lucide-react";
+import { ExternalLink, Images, LayoutDashboard, LogOut, Menu, PanelsTopLeft, Settings, X, type LucideIcon } from "lucide-react";
 import { Wordmark } from "@/components/Wordmark";
 import { StatusBar } from "./StatusBar";
 import { ConflictBanner } from "./ConflictBanner";
@@ -20,19 +20,16 @@ interface NavItem {
 const nav: NavItem[] = [
   { href: "/admin", label: "Dashboard", icon: LayoutDashboard },
   { href: "/admin/hemsidan", label: "Hemsidan", icon: PanelsTopLeft },
-  { href: "/admin/ai", label: "AI-assistent", icon: Sparkles },
   { href: "/admin/bilder", label: "Bilder", icon: Images },
-  { href: "/admin/offertforfragningar", label: "Offertförfrågningar", icon: Inbox },
   { href: "/admin/installningar", label: "Inställningar", icon: Settings },
 ];
 
 function NavLinks({ onNavigate }: { onNavigate?: () => void }) {
   const pathname = usePathname().replace(/\/$/, "");
-  const { newQuotes, newSuggestions } = useAdminData();
+  const { newSuggestions } = useAdminData();
   // What is waiting behind a page: new quote requests, and new suggestions from the staff under Hemsidan → Förslag.
   const counts: Record<string, { count: number; label: string }> = {
     "/admin/hemsidan": { count: newSuggestions, label: newSuggestions === 1 ? "1 nytt förslag" : `${newSuggestions} nya förslag` },
-    "/admin/offertforfragningar": { count: newQuotes, label: `${newQuotes} nya` },
   };
   return (
     <ul className="space-y-0.5">

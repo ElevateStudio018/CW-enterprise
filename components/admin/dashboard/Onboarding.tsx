@@ -6,20 +6,15 @@ import { ChevronRight } from "lucide-react";
 import { Card } from "../ui/Card";
 import { useDraft } from "@/contexts/admin/AdminDataContext";
 import { doneFromContent, itemForSave, loadOnboarding, onboardingItems, saveOnboarding, type OnboardingState } from "@/lib/admin/onboarding";
-import { supabase } from "@/lib/admin/supabase";
 
 /** "Kom igång": shown from the first login until every item is done, then never again. */
 export function Onboarding() {
   const { draft, store } = useDraft();
   const [state, setState] = useState<OnboardingState | null>(null);
-  const [conversations, setConversations] = useState(0);
+  const conversations = 0;
 
   useEffect(() => {
     void loadOnboarding().then(setState);
-    void supabase()
-      .from("ai_conversations")
-      .select("id", { count: "exact", head: true })
-      .then(({ count }) => setConversations(count ?? 0));
   }, []);
 
   // Saves tick items off as they happen.
