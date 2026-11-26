@@ -74,7 +74,9 @@ export async function verifyToken(token: string): Promise<string> {
       throw new GitHubError("Nyckeln stämmer inte. Kontrollera att du klistrat in hela nyckeln.", error.status);
     throw error;
   });
-  if (!repo.permissions?.push) throw new GitHubError("Nyckeln får läsa men inte ändra hemsidan.", 403);
+  // A public repository answers without a valid key too, but then without permissions.
+  if (!repo.permissions) throw new GitHubError("Nyckeln stämmer inte. Kontrollera att du klistrat in hela nyckeln.", 401);
+  if (!repo.permissions.push) throw new GitHubError("Nyckeln får läsa men inte ändra hemsidan.", 403);
   try {
     const user = await gh<{ login: string; name: string | null }>("/user", {}, token);
     return user.name || user.login;
