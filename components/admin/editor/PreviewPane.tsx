@@ -1,10 +1,11 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
-import { Monitor, Smartphone } from "lucide-react";
+import { createPortal } from "react-dom";
+import { Maximize2, Minimize2, Monitor, MousePointerClick, Smartphone } from "lucide-react";
 import { Skeleton } from "../ui/Skeleton";
 import { basePath } from "@/lib/admin/config";
-import { PREVIEW_READY, type PreviewMessage, type PreviewTarget } from "@/lib/admin/preview";
+import { PREVIEW_EDIT, PREVIEW_READY, PREVIEW_SELECT, type PreviewMessage, type PreviewTarget } from "@/lib/admin/preview";
 import type { SiteData } from "@/lib/site/schema.ts";
 
 const widths = { desktop: 1280, mobile: 390 } as const;
@@ -14,14 +15,32 @@ type Device = keyof typeof widths;
  * The site as it will look, drawn by the site's own components in a frame and updated with every keystroke (the draft
  * is posted to the frame; nothing is saved or reloaded for it). Desktop is shown scaled down to fit.
  */
-export function PreviewPane({ draft, target, className = "" }: { draft: SiteData; target: PreviewTarget; className?: string }) {
+export function PreviewPane({
+  draft,
+  target,
+  className = "",
+  onEdit,
+  onSelectSection,
+}: {
+  draft: SiteData;
+  target: PreviewTarget;
+  className?: string;
+  /** Given: texts can be clicked in the preview and changed in place; each change arrives here. */
+  onEdit?: (path: string[], value: string) => void;
+  /** A section was clicked in the preview. */
+  onSelectSection?: (sectionId: string) => void;
+}) {
+  const editable = Boolean(onEdit);
+  const [fullscreen, setFullscreen] = useState(false);
+  const handlers = useRef({ onEdit, onSelectSection });
+  handlers.current = { onEdit, onSelectSection };
   const frameRef = useRef<HTMLIFrameElement>(null);
   const boxRef = useRef<HTMLDivElement>(null);
   const [ready, setReady] = useState(false);
   const [device, setDevice] = useState<Device>("desktop");
   const [box, setBox] = useState({ width: 0, height: 0 });
-  const latest = useRef({ draft, target });
-  latest.current = { draft, target };
+  const latest = useRef({ draft, target, editable });
+  latest.current = { draft, target, editable };
 
   // Phones start in the phone view.
   useEffect(() => {
@@ -52,6 +71,10 @@ export function PreviewPane({ draft, target, className = "" }: { draft: SiteData
       if (event.data?.type === PREVIEW_READY) {
         setReady(true);
         post();
+      } else if (event.data?.type === PREVIEW_EDIT && Array.isArray(event.data.path) && typeof event.data.value === "string") {
+        handlers.current.onEdit?.(event.data.path, event.data.value);
+      } else if (event.data?.type === PREVIEW_SELECT && typeof event.data.sectionId === "string") {
+        handlers.current.onSelectSection?.(event.data.sectionId);
       }
     }
     window.addEventListener("message", onMessage);
@@ -62,20 +85,39 @@ export function PreviewPane({ draft, target, className = "" }: { draft: SiteData
     if (ready) post();
   }, [draft, target, ready, post]);
 
+  useEffect(() => {
+    if (!fullscreen) return;
+    const onKey = (event: KeyboardEvent) => event.key === "Escape" && setFullscreen(false);
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [fullscreen]);
+
   const virtualWidth = widths[device];
   const scale = box.width > 0 ? Math.min(1, box.width / virtualWidth) : 1;
   const frameWidth = virtualWidth;
   const frameHeight = box.height / scale;
   const offset = Math.max(0, (box.width - virtualWidth * scale) / 2);
 
-  return (
-    <div className={`flex min-h-0 flex-col overflow-hidden rounded-2xl bg-white ring-1 ring-admin-line ${className}`}>
+  const pane = (
+    <div
+      className={
+        fullscreen
+          ? "fixed inset-0 z-[1000] flex min-h-0 flex-col overflow-hidden bg-white"
+          : `flex min-h-0 flex-col overflow-hidden rounded-2xl bg-white ring-1 ring-admin-line ${className}`
+      }
+    >
       <div className="flex items-center justify-between gap-3 border-b border-admin-line px-3 py-2">
         <p className="flex items-center gap-2 pl-1 text-[13px] font-semibold text-admin-muted">
           <span aria-hidden="true" className="h-2 w-2 rounded-full bg-emerald-500" />
           Förhandsvisning
           <span className="sr-only">– uppdateras medan du skriver</span>
+          {editable && fullscreen && (
+            <span className="hidden items-center gap-1 whitespace-nowrap font-normal md:flex">
+              · <MousePointerClick aria-hidden="true" className="h-4 w-4" /> Klicka på en text för att ändra den
+            </span>
+          )}
         </p>
+        <div className="flex items-center gap-2">
         <div role="group" aria-label="Skärmstorlek" className="flex rounded-xl bg-stone-100 p-1">
           {(
             [
@@ -96,6 +138,17 @@ export function PreviewPane({ draft, target, className = "" }: { draft: SiteData
               {label}
             </button>
           ))}
+        </div>
+        <button
+          type="button"
+          onClick={() => setFullscreen(!fullscreen)}
+          aria-pressed={fullscreen}
+          title={fullscreen ? "Tillbaka till redigeringen (Esc)" : "Visa hemsidan i helskärm och redigera direkt på den"}
+          className="flex min-h-9 items-center gap-1.5 rounded-lg px-3 text-[13px] font-semibold text-admin-muted transition hover:bg-stone-100 hover:text-admin-ink focus-visible:outline focus-visible:outline-2 focus-visible:outline-admin"
+        >
+          {fullscreen ? <Minimize2 aria-hidden="true" className="h-4 w-4" /> : <Maximize2 aria-hidden="true" className="h-4 w-4" />}
+          <span className="hidden sm:inline">{fullscreen ? "Stäng helskärm" : "Helskärm"}</span>
+        </button>
         </div>
       </div>
       <div ref={boxRef} className="relative min-h-0 flex-1 overflow-hidden bg-stone-100">
@@ -120,4 +173,6 @@ export function PreviewPane({ draft, target, className = "" }: { draft: SiteData
       </div>
     </div>
   );
+  // Full screen sits above the whole admin (outside the editor's sticky column, which would keep it underneath).
+  return fullscreen ? createPortal(pane, document.body) : pane;
 }

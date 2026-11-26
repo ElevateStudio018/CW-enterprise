@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
 import { QuoteModal } from "@/components/QuoteModal";
@@ -18,6 +18,7 @@ import { googleFontsHref } from "@/lib/site/fonts.ts";
 import type { SiteData } from "@/lib/site/schema.ts";
 import { PREVIEW_READY, type PreviewMessage, type PreviewTarget } from "@/lib/admin/preview";
 import { branch, repository } from "@/lib/admin/github";
+import { InlineEditing } from "@/components/admin/editor/InlineEditing";
 
 // Pictures uploaded in the admin are in the repository at once but on the site only after the next build.
 if (typeof window !== "undefined") (window as { __uploadsFrom?: string }).__uploadsFrom = `https://raw.githubusercontent.com/${repository}/${branch}/public`;
@@ -32,15 +33,41 @@ function fontHref(site: SiteData): string | null {
 export default function PreviewPage() {
   const [site, setSite] = useState<SiteData | null>(null);
   const [target, setTarget] = useState<PreviewTarget | null>(null);
+  const [editable, setEditable] = useState(false);
+  // While a text is typed into the page itself, React must not redraw it; the newest draft waits and the page is drawn
+  // afresh (renderKey) once the typing ends.
+  const editing = useRef(false);
+  const pending = useRef<PreviewMessage | null>(null);
+  const [renderKey, setRenderKey] = useState(0);
+  const skipScroll = useRef<string | null>(null);
+
+  const apply = useCallback((data: PreviewMessage) => {
+    setSite(data.draft);
+    setTarget(data.target);
+    setEditable(Boolean(data.editable));
+  }, []);
+
+  const onEditingChange = useCallback(
+    (now: boolean) => {
+      editing.current = now;
+      if (!now) {
+        if (pending.current) apply(pending.current);
+        pending.current = null;
+        setRenderKey((key) => key + 1);
+      }
+    },
+    [apply]
+  );
 
   useEffect(() => {
     function onMessage(event: MessageEvent) {
       if (event.origin !== window.location.origin) return;
       const data = event.data as PreviewMessage;
       if (data?.type !== "cwe-preview") return;
-      setSite(data.draft);
-      setTarget(data.target);
+      if (editing.current) pending.current = data;
+      else apply(data);
     }
+
     window.addEventListener("message", onMessage);
     window.parent?.postMessage({ type: PREVIEW_READY }, window.location.origin);
     // Links in the preview go nowhere: it shows the page, it does not browse.
@@ -53,12 +80,16 @@ export default function PreviewPage() {
       window.removeEventListener("message", onMessage);
       document.removeEventListener("click", stopLinks, true);
     };
-  }, []);
+  }, [apply]);
 
   // Bring the part being edited into view: a section, or the footer.
   const focusKey = target?.kind === "page" ? target.sectionId ?? "" : target?.kind === "chrome" ? target.part : "";
   useEffect(() => {
     if (!focusKey) return;
+    if (skipScroll.current === focusKey) {
+      skipScroll.current = null;
+      return;
+    }
     const selector = focusKey === "footer" ? "footer" : focusKey === "navigation" ? "body" : `[data-preview-section="${focusKey}"]`;
     const element = document.querySelector(selector);
     if (focusKey === "navigation") window.scrollTo({ top: 0, behavior: "smooth" });
@@ -109,7 +140,8 @@ export default function PreviewPage() {
     <QuoteModalProvider>
       {theme}
       {fontLink}
-      <div className="vk">
+      {editable && <InlineEditing site={site} pageId={target.kind === "page" ? target.pageId : undefined} onEditingChange={onEditingChange} onSelectSection={(id) => (skipScroll.current = id)} />}
+      <div className="vk" key={renderKey}>
         <Navbar content={navContent(site)} />
         <main>{body}</main>
         <Footer site={site} />

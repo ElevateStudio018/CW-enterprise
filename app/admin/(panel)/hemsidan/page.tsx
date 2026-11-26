@@ -93,7 +93,7 @@ function WebsiteEditor() {
     <>
       <PageHeader
         title="Hemsidan"
-        description="Allt sparas automatiskt medan du skriver. Ändringarna syns på hemsidan när du publicerar."
+        description="Klicka på en text i förhandsvisningen och skriv direkt, eller ändra i listan. Allt sparas automatiskt och syns på hemsidan när du publicerar."
         actions={
           <AdminButton icon={Undo2} onClick={() => store.undo()} disabled={!canUndo} title="Ångrar din senaste ändring (upp till 20 steg)">
             Ångra
@@ -196,6 +196,11 @@ function WebsiteEditor() {
             <PreviewPane
               draft={draft}
               target={target}
+              onEdit={(path, value) => store.edit(path, value)}
+              onSelectSection={(id) => {
+                setOpenSection(id);
+                setActiveSection(id);
+              }}
               className={`${previewShown ? "h-[46svh]" : "hidden"} lg:flex lg:h-[calc(100svh-112px)]`}
             />
           )}
