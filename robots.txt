@@ -1,0 +1,6 @@
+User-Agent: *
+Allow: /
+Disallow: /admin/
+Disallow: /forslag/
+
+Sitemap: https://elevatestudio018.github.io/CW-enterprise/sitemap.xml
