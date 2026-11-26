@@ -1,7 +1,7 @@
 name: Deploy site to GitHub Pages
 
 # Builds the public site from the published content in Supabase and puts it on the gh-pages branch, which GitHub
-# Pages serves. Runs on pushes and when the admin panel's Publish button dispatches it (GITHUB_DISPATCH_TOKEN).
+# Pages serves. Runs on every push, including the commits Pages CMS makes when content is saved.
 #
 # Where the site is served from is a repository variable (Settings → Secrets and variables → Actions → Variables):
 #   default (no variable) → the customer's domain cwenterprise.se at the root, with the CNAME file GitHub Pages needs
@@ -11,9 +11,6 @@ on:
   push:
     branches: [main, claude/ny-webbplats]
   workflow_dispatch:
-  # Picks up what is published in the admin panel even without GITHUB_DISPATCH_TOKEN (then within the hour).
-  schedule:
-    - cron: "17 * * * *"
 
 permissions:
   contents: write
@@ -47,10 +44,7 @@ jobs:
       - run: npm run build
         env:
           GITHUB_PAGES: "true"
-          # The site's Supabase project (public values, row level security protects the data). Repository variables
-          # override the project ref chnvmoxbsrefeahqgfht.
-          NEXT_PUBLIC_SUPABASE_URL: ${{ vars.NEXT_PUBLIC_SUPABASE_URL || 'https://chnvmoxbsrefeahqgfht.supabase.co' }}
-          NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{ vars.NEXT_PUBLIC_SUPABASE_ANON_KEY || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImNobnZtb3hic3JlZmVhaHFnZmh0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTIzOTYyMjcsImV4cCI6MjEwNzk3MjIyN30.XmL2DAxQbHZWdJzX9109P36_3qrjGwgC0jPzCxRa-AM' }}
+          # The content comes from content/site.json, edited in Pages CMS; no database.
       - name: Files GitHub Pages needs
         run: |
           touch out/.nojekyll
