@@ -1,12 +1,12 @@
 name: Deploy site to GitHub Pages
 
-# Builds the public site from the published content in Supabase and puts it on the gh-pages branch, which GitHub
-# Pages serves. Runs on every push, including the commits Pages CMS makes when content is saved.
+# Builds the public site from content/site.json and puts it on the gh-pages branch, which GitHub Pages serves. Runs on
+# every push, including the commits the admin panel makes when content is published.
 #
 # Where the site is served from is a repository variable (Settings → Secrets and variables → Actions → Variables):
-#   default (no variable) → the customer's domain cwenterprise.se at the root, with the CNAME file GitHub Pages needs
-#   SITE_DOMAIN = another domain → that domain instead
-# GitHub Pages already redirects the old preview address there; see LANSERING.md.
+#   default (no variable) → the preview elevatestudio018.github.io/CW-enterprise, where the admin panel works too
+#   SITE_DOMAIN = cwenterprise.se → that domain at the root, with the CNAME file GitHub Pages needs (set it at launch,
+#   once the domain's DNS points to GitHub Pages; see LANSERING.md)
 on:
   push:
     branches: [main, claude/ny-webbplats]
@@ -23,7 +23,7 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     env:
-      SITE_DOMAIN: ${{ vars.SITE_DOMAIN || 'cwenterprise.se' }}
+      SITE_DOMAIN: ${{ vars.SITE_DOMAIN || '' }}
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -44,7 +44,7 @@ jobs:
       - run: npm run build
         env:
           GITHUB_PAGES: "true"
-          # The content comes from content/site.json, edited in Pages CMS; no database.
+          # The content comes from content/site.json, which the admin panel commits; no database.
       - name: Files GitHub Pages needs
         run: |
           touch out/.nojekyll
